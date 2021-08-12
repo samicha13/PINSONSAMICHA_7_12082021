@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
+const userRoutes = require('./routes/user');
+const postRoutes = require('./routes/post');
 
 
 const { Sequelize } = require('sequelize');
@@ -38,7 +40,8 @@ try {
 }
 
 
-
+//User routes
+app.use('/api/auth',userRoutes);
 
 
 module.exports = app;

@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       models.Users.hasMany(models.Posts, {foreignKey: "userId"});
       models.Users.hasMany(models.Comments);
-        onDelete: 'CASCADE';
+      
      
     }
   };
