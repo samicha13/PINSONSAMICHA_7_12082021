@@ -8,8 +8,8 @@ const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!.@#$%^&*])(?=.{
 exports.signup = (req, res, next) => {
   if (
     req.body.email == "" ||
-    req.body.name == "" ||
-    req.body.firstname == "" ||
+    req.body.nom == "" ||
+    req.body.prenom == "" ||
     req.body.password == ""
   ) {
     return res
@@ -29,10 +29,10 @@ exports.signup = (req, res, next) => {
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
-      const user = models.User.create({
+      const user = models.Users.create({
         email: req.body.email,
-        name: req.body.name,
-        firstname: req.body.firstname,
+        nom: req.body.nom,
+        prenom: req.body.prenom,
         password: hash,
         isAdmin: false,
       })
