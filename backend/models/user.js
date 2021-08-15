@@ -8,6 +8,7 @@ const User = sequelize.define('User', {
     nom: DataTypes.STRING,
     password: DataTypes.STRING,
     email: DataTypes.STRING,
+    username: DataTypes.STRING,
     isAdmin: DataTypes.BOOLEAN
 });
 

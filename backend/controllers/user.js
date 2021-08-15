@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const models = require("../models/user");
+const sequelize = require('../config/sequelize-config');
+require("dotenv").config();
+const auth = require("../middlewares/auth");
 
 const email_reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const password_reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!.@#$%^&*])(?=.{8,})/;
@@ -13,9 +16,11 @@ exports.signup = (req, res, next) => {
     !req.body.nom ||
     !req.body.prenom ||
     !req.body.password ||
+    !req.body.username ||
     req.body.email == "" ||
     req.body.nom == "" ||
     req.body.prenom == "" ||
+    req.body.password =="" ||
     req.body.password == ""
   ) {
     return res
@@ -32,7 +37,7 @@ exports.signup = (req, res, next) => {
     });
   }
 
-  
+
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
@@ -56,18 +61,15 @@ exports.signup = (req, res, next) => {
     .catch((error) => res.status(500).json({ error: error }));
 };
 
-exports.login = (req, res, next) => {
-  if (req.body.email == null || req.body.password == null) {
+// conexion a son compte 
+exports.login =  (req, res, next) => {
+  if (!req.body.email || !req.body.password ) {
     return res
       .status(400)
       .json({ error: "Merci de remplir tous les champs !" });
   }
-
-  models.User.findOne({
-    where: {
-      email: req.body.email,
-    },
-  })
+console.log(req.body.email),
+models.User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
         return res.status(404).json({ error: "Utilisateur introuvable !" });
@@ -82,7 +84,8 @@ exports.login = (req, res, next) => {
             userId: user.id,
             name: user.name,
             firstname: user.firstname,
-            token: jwt.sign({ userId: user.id, isAdmin: user.isAdmin }, "TK_SESSION", {
+            token: jwt.sign({ userId: user.id, isAdmin: user.isAdmin }, 
+              process.env.TK_SESSION, {
               expiresIn: "24h",
             }),
           });
