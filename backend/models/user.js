@@ -1,27 +1,19 @@
 
-'use strict';
-const {Model} = require('sequelize');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/sequelize-config');
 
-module.exports = (sequelize, DataTypes) => {
-  class Users extends Model {
-    
-    static associate(models) {
-      models.Users.hasMany(models.Posts, {foreignKey: "userId"});
-      models.Users.hasMany(models.Comments);
-      
-     
-    }
-  };
-  Users.init({
+// Création du modèle 'User'
+const User = sequelize.define('User', {
     prenom: DataTypes.STRING,
     nom: DataTypes.STRING,
     password: DataTypes.STRING,
-   email: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN,
-   
-  }, {
-    sequelize,
-    modelName: 'Users',
-  });
-  return Users;
-};
+    email: DataTypes.STRING,
+    isAdmin: DataTypes.BOOLEAN
+});
+
+// Création de la table 'users'
+User.sync()
+    .then(() => console.log("The table for the User model is created"))
+    .catch(error => console.log(error));
+
+module.exports = User;

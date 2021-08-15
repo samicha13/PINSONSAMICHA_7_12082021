@@ -2,6 +2,7 @@
 //on importe le package http et le app.js
 const http = require('http');
 const app = require('./app');
+require('./config/sequelize-config');
 
 
 // fonction qui renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaîne; 
