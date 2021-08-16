@@ -35,6 +35,7 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       username: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       createdAt: {

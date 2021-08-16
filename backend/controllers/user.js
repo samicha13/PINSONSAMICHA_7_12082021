@@ -16,11 +16,9 @@ exports.signup = (req, res, next) => {
     !req.body.nom ||
     !req.body.prenom ||
     !req.body.password ||
-    !req.body.username ||
     req.body.email == "" ||
     req.body.nom == "" ||
     req.body.prenom == "" ||
-    req.body.password =="" ||
     req.body.password == ""
   ) {
     return res
@@ -68,8 +66,8 @@ exports.login =  (req, res, next) => {
       .status(400)
       .json({ error: "Merci de remplir tous les champs !" });
   }
-console.log(req.body.email),
-models.User.findOne({ email: req.body.email })
+
+models.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
         return res.status(404).json({ error: "Utilisateur introuvable !" });
@@ -82,8 +80,8 @@ models.User.findOne({ email: req.body.email })
           }
           res.status(200).json({
             userId: user.id,
-            name: user.name,
-            firstname: user.firstname,
+            nom: user.nom,
+            prenom: user.prenom,
             token: jwt.sign({ userId: user.id, isAdmin: user.isAdmin }, 
               process.env.TK_SESSION, {
               expiresIn: "24h",
