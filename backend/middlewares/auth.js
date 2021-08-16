@@ -1,5 +1,5 @@
 // import package sécurité
-const jsonWebToken = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 //Routes verifie le  TOKEN de l'utilisateur, si il est identique à l'id de l'utilisateur qui fait sa requête, alors les modification seront autorisées 
 module.exports = (req, res, next) => {
