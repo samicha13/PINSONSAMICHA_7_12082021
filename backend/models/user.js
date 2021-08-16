@@ -13,7 +13,7 @@ const User = sequelize.define('User', {
 
 // Création de la table 'users'
 User.sync()
-    .then(() => console.log("The table for the User model is created"))
+    .then(() => console.log("La table model pour User est crée"))
     .catch(error => console.log(error));
 
 module.exports = User;

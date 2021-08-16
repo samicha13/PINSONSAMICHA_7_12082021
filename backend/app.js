@@ -28,6 +28,7 @@ app.use(bodyParser.json());
 
 //User routes
 app.use('/api/auth',userRoutes);
+app.use("/api/posts", postRoutes);
 
 
 module.exports = app;
