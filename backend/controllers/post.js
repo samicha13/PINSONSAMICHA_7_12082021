@@ -29,15 +29,13 @@ exports.createPost = (req, res, next) => {
 
 //modification d'un post
 exports.updatePost = (req, res) => {
-    const token = req.headers.authorization.split(" ")[1];
-  const decodedToken = jwt.verify(token, process.env.TK_SESSION);
-    const userId = decodedToken.userId;
-    if (!req.body.message) {
+  
+    if (!req.body.message || req.body.message === "") {
         return res.status(400).json({ error: "Aucun contenu" });
     }
 
    models.update({ message: req.body.message }, {
-        where: { idUsers: userId }
+        where: { id: req.body.id }
     })
         .then(() => res.status(200).json({ message: "Post modifié" }))
         .catch(error => res.status(500).json({ error }));
@@ -46,11 +44,8 @@ exports.updatePost = (req, res) => {
 
 //  effacer le post
 exports.deletePost = (req, res) => {
-    const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.TK_SESSION);
-      const userId = decodedToken.userId;
 
-    models.destroy({ where: { idUsers: userId } })
+    models.destroy({ where: { id: req.body.id } })
         .then(() => res.status(200).json({ message: "Post supprimé" }))
         .catch(error => res.status(500).json({ error }));
 };
