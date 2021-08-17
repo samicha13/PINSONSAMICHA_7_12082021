@@ -67,7 +67,7 @@ exports.login =  (req, res, next) => {
       .json({ error: "Merci de remplir tous les champs !" });
   }
 
-models.findOne({ email: req.body.email })
+models.findOne({ where: {email: req.body.email }})
     .then((user) => {
       if (!user) {
         return res.status(404).json({ error: "Utilisateur introuvable !" });

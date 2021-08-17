@@ -54,6 +54,8 @@ exports.deletePost = (req, res) => {
 // voir tout les posts
 
 exports.getAllPosts = (req, res, next) => {
+    modelsUser.hasMany(models, {foreignKey: 'idUsers'});
+models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
     models.findAll({
       order: [["updatedAt", "DESC"]],
       attributes: [
@@ -67,7 +69,7 @@ exports.getAllPosts = (req, res, next) => {
       ],
       include: [
         {
-          model: modelsUser,
+          model: modelsUser, // recuperer le nom et prénom de la personne qui post
           attributes: ["nom", "prenom"],
         },
       ],
@@ -85,6 +87,8 @@ exports.getAllPosts = (req, res, next) => {
 // Avoir un post en particulier
 
   exports.getOnePost = (req, res, next) => {
+    modelsUser.hasMany(models, {foreignKey: 'idUsers'});
+    models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
     models.findOne({
       attributes: [
         "id",
@@ -94,6 +98,12 @@ exports.getAllPosts = (req, res, next) => {
         "media",
         "createdAt",
         "updatedAt",
+      ],
+      include: [
+        {
+          model: modelsUser, // recuperer le nom et prénom de la personne qui post
+          attributes: ["nom", "prenom"],
+        },
       ],
       where: { id: req.params.id },
     })
