@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Posts.init({
-    idUsers: DataTypes.INTEGER,
     titre: DataTypes.STRING,
     message: DataTypes.STRING,
     media: DataTypes.STRING,
+    userlikes: DataTypes.INTEGER,
     likes: DataTypes.INTEGER
   }, {
     sequelize,

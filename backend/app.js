@@ -7,7 +7,7 @@ const app = express();
 
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
-
+const commentRoutes = require('./routes/comment');
 
 
 
@@ -29,6 +29,6 @@ app.use(bodyParser.json());
 //User routes
 app.use('/api/auth',userRoutes);
 app.use("/api/posts", postRoutes);
-
+app.use("/api/posts/", commentRoutes);
 
 module.exports = app;

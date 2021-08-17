@@ -87,6 +87,7 @@ models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
 // Avoir un post en particulier
 
   exports.getOnePost = (req, res, next) => {
+
     modelsUser.hasMany(models, {foreignKey: 'idUsers'});
     models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
     models.findOne({
@@ -124,18 +125,36 @@ models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
     const decodedToken = jwt.verify(token, process.env.TK_SESSION);
     const userId = decodedToken.userId;
     const like = req.body.like;
+    const postId = req.params.id;
   
     if (like === 1) {
-    models.updateOne(
-        { id: postId },
+    models.findOne({ where: { id: req.params.id }})
+      .then((post) => 
+      {
+        if (post != null)
         {
-          $push: { usersLikes: userId }, 
-          $inc: { likes: +1 },
+          models.increment(
+            { like: +1 },
+            { where: { id: postId }}
+          )
+            .then(() => {
+              models.update(
+                { userLikes: userId },
+                { where: { id: postId }}
+              )
+                .then(() => res.status(200).json({ message: "Like ajouté" }))
+                .catch(error => res.status(400).json({ error }));
+            })
+            .catch(error => res.status(400).json({ error }));
+        } else
+        {
+          res.status(400).json({ error: "Le message demandé n'existe pas" });
         }
-      );
+      })
+      .catch(error => res.status(500).json({ error }));
     }
-}
-
+  };
+   
 
 
 

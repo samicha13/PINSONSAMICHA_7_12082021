@@ -1,27 +1,17 @@
-'use strict';
-const {Model} = require('sequelize');
-
-module.exports = (sequelize, DataTypes) => {
-  class Posts extends Model {
-    
-    static associate(models) {
-    models.Posts.belongsTo(models.Users,{ foreignKey:"userId"}),
-      models.Posts.hasMany(models.Comments);
-
-      
-    }
-  };
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/sequelize-config');
 
 
-  Posts.init({
-    userId: DataTypes.INTEGER,
-    message: DataTypes.TEXT,
-    media: DataTypes.STRING,
-    likes: DataTypes.INTEGER
+// Création du modèle 'Post'
+const Comment = sequelize.define('Comment', {
+  idUser: DataTypes.INTEGER,
+    idPosts: DataTypes.INTEGER,
+    comment: DataTypes.STRING
+});
 
-  }, {
-    sequelize,
-    modelName: 'Posts',
-  });
-  return Posts;
-};
+// Création de la table 'users'
+Comment.sync()
+    .then(() => console.log("La table model pour Comment est créé"))
+    .catch(error => console.log(error));
+
+module.exports = Comment;

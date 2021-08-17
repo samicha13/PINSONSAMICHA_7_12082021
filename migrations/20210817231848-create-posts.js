@@ -8,14 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      idUsers: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-model:'Users',
-key:'id'
-        }
-      },
       titre: {
         type: Sequelize.STRING
       },
@@ -24,6 +16,9 @@ key:'id'
       },
       media: {
         type: Sequelize.STRING
+      },
+      userlikes: {
+        type: Sequelize.INTEGER
       },
       likes: {
         type: Sequelize.INTEGER
