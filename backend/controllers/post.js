@@ -29,18 +29,31 @@ exports.createPost = (req, res, next) => {
 
 //modification d'un post
 exports.updatePost = (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.TK_SESSION);
+  const userId = decodedToken.userId;
+  const isAdmin = decodedToken.isAdmin;
   
     if (!req.body.message || req.body.message === "") {
         return res.status(400).json({ error: "Aucun contenu" });
     }
 
+    models.findOne({ where: { id: req.body.id ,
+    } })
+      .then((post) => {if (post.idUsers === userId || isAdmin === true) {
+
    models.update({ message: req.body.message }, {
         where: { id: req.body.id }
     })
-        .then(() => res.status(200).json({ message: "Post modifié" }))
-        .catch(error => res.status(500).json({ error }));
-};
-
+        .then(() => {res.status(200).json({ message: "Post modifié" });
+      });
+      }
+      else{
+      res.status(401).json({message:"vous n'avez pas les droits nécessaires pour modifier le post"});
+    }
+  }); 
+  };
+  
 
 //  effacer le post
 exports.deletePost = (req, res) => {
