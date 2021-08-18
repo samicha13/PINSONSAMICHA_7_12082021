@@ -49,10 +49,10 @@ exports.deletePost = (req, res) => {
   const userId = decodedToken.userId;
   const isAdmin = decodedToken.isAdmin;
     models.findOne({ where: { id: req.body.id ,
-      idUsers: userId,} })
+      } })
         .then((post) => 
        
-        {if (post.idUser === userId || isAdmin === true) {
+        {if (post.idUsers === userId || isAdmin === true) {
           post.destroy()
 .then(() => {
    res.status(200).json({ message: "Post supprimé" });
@@ -146,6 +146,17 @@ models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
     models.findOne({ where: { id: req.params.id }})
       .then((post) => 
       {
+        let usersLikes = post.usersLikes; // on stocke dans une variable
+        if (usersLikes !== null && usersLikes.indexOf(userId) !== -1) { //si userlike pas nul et déjà présent dans le tableau alors 
+          return res.status(401).json({ message: "Vous ne pouvez pas liker 2 fois le même message" });
+        } 
+        if (usersLikes === null) {
+          usersLikes = userId;
+        }
+        else {
+          usersLikes += ", " + userId;
+        }
+
         if (post != null)
         {
           models.increment(
@@ -154,7 +165,7 @@ models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
           )
             .then(() => {
               models.update(
-                { userLikes: userId },
+                { usersLikes: usersLikes },
                 { where: { id: postId }}
               )
                 .then(() => res.status(200).json({ message: "Like ajouté" }))
@@ -169,16 +180,3 @@ models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
       .catch(error => res.status(500).json({ error }));
     }
   };
-   
-
-
-
-
-
-
-
-
-
-
-
-
