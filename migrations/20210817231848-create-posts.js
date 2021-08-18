@@ -17,7 +17,7 @@ module.exports = {
       media: {
         type: Sequelize.STRING
       },
-      userlikes: {
+      userslikes: {
         type: Sequelize.INTEGER
       },
       likes: {

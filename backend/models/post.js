@@ -8,7 +8,7 @@ const Post = sequelize.define('Post', {
     titre: DataTypes.STRING,
     message: DataTypes.STRING,
    media: DataTypes.STRING,
- userLikes: DataTypes.INTEGER, 
+ usersLikes: DataTypes.INTEGER, 
  likes: {
      type: DataTypes.INTEGER,
  defaultValue: 0
