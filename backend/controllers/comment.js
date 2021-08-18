@@ -54,23 +54,25 @@ exports.createComment = (req, res, next) => {
             });
           });
       }
+      else {
+        res.status(401).json({message:"vous n'avez pas les droits nécessaires pour supprimer le commentaire"});
+      }
     });
   };
 
-  //Obtenir tout les commentaires 
-
   exports.getAllComments = (req, res, next) => {
-    modelsUser.hasMany(models, {foreignKey: 'idUsers'});
-models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
+    modelsUser.hasMany(models, {foreignKey: 'idUser'});
+models.belongsTo(modelsUser, {foreignKey: 'idUser'});
     models.findAll({
       where: {
         idPosts: req.params.id,
       },
       order: [["updatedAt", "DESC"]],
+      attributes: ["comment"],
       include: [
         {
           model: modelsUser,
-          attributes: ["comment","prenom","nom"],
+          attributes: ["prenom","nom"],
         },
       ],
     })

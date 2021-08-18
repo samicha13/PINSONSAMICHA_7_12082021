@@ -44,10 +44,25 @@ exports.updatePost = (req, res) => {
 
 //  effacer le post
 exports.deletePost = (req, res) => {
-
-    models.destroy({ where: { id: req.body.id } })
-        .then(() => res.status(200).json({ message: "Post supprimé" }))
-        .catch(error => res.status(500).json({ error }));
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.TK_SESSION);
+  const userId = decodedToken.userId;
+  const isAdmin = decodedToken.isAdmin;
+    models.findOne({ where: { id: req.body.id ,
+      idUsers: userId,} })
+        .then((post) => 
+       
+        {if (post.idUser === userId || isAdmin === true) {
+          post.destroy()
+.then(() => {
+   res.status(200).json({ message: "Post supprimé" });
+});
+        }
+else{
+         
+  res.status(401).json({message:"vous n'avez pas les droits nécessaires pour supprimer le post"});
+}
+}); 
 };
 
 
@@ -134,7 +149,7 @@ models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
         if (post != null)
         {
           models.increment(
-            { like: +1 },
+            { likes: +1 },
             { where: { id: postId }}
           )
             .then(() => {
