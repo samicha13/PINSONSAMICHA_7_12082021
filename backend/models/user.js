@@ -7,7 +7,11 @@ const User = sequelize.define('User', {
     prenom: DataTypes.STRING,
     nom: DataTypes.STRING,
     password: DataTypes.STRING,
-    email: DataTypes.STRING,
+    email: { 
+        type: DataTypes.STRING,
+        unique: true,
+
+    },
     isAdmin: DataTypes.BOOLEAN
 });
 
