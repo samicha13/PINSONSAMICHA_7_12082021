@@ -40,7 +40,11 @@ exports.updatePost = (req, res) => {
 
     models.findOne({ where: { id: req.body.id ,
     } })
-      .then((post) => {if (post.idUsers === userId || isAdmin === true) {
+      .then((post) => {
+        if (post === null) {
+          return res.status(400).json({ error: "Le message demandé n'existe pas" });
+        }
+        if (post.idUsers === userId || isAdmin === true) {
 
    models.update({ message: req.body.message }, {
         where: { id: req.body.id }
@@ -51,6 +55,7 @@ exports.updatePost = (req, res) => {
       else{
       res.status(401).json({message:"vous n'avez pas les droits nécessaires pour modifier le post"});
     }
+    
   }); 
   };
   
