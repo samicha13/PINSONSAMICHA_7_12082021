@@ -109,7 +109,7 @@ exports.deleteUser = (req, res, next) => {
         id: req.params.id, 
       },
     }).then((user) => {
-      if (user.idUsers === userId || isAdmin === true) {
+      if (user.id === userId || isAdmin === true) {
         user
           .destroy()
           .then(() => {
