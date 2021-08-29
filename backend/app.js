@@ -12,7 +12,7 @@ const commentRoutes = require('./routes/comment');
 
 
 app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+	res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
 	res.setHeader(
 		"Access-Control-Allow-Headers",
 		"Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"

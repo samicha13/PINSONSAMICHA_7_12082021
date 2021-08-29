@@ -1,25 +1,72 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import { createRouter, createWebHashHistory } from "vue-router";
+import home from "../views/home.vue";
+
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
+  { 
+    path: "/", 
+    name: "home",
+    component: home, 
+  },
+  { 
+    path: "/createAcc",
+    name: "createAcc", 
+    component: () =>
+    import(/* webpackChunkName: "about" */ "../views/CreateAcc.vue"),
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: "/login",
+    name: "login",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/login.vue"),
+  },
+  {
+    path: "/forum",
+    name: "forum",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/forum.vue"),
+    beforeEnter: (to, from, next) => {
+      let token = localStorage.getItem("token");
+      if (token) {
+        next();
+      } else {
+        next({ name: "login" });
+      }
+    },
+  },
+  {
+    path: "/profile",
+    name: "profiel",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/profile.vue"),
+    beforeEnter: (to, from, next) => {
+      let token = localStorage.getItem("token");
+      if (token) {
+        next();
+      } else {
+        next({ name: "login" });
+      }
+    },
+  },
+  {
+    path: "/onePost/:id",
+    name: "onePost",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../components/onePost.vue"),
+    beforeEnter: (to, from, next) => {
+      let token = localStorage.getItem("token");
+      if (token) {
+        next();
+      } else {
+        next({ name: "login" });
+      }
+    },
+  },
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
 })
 
-export default router
+export default router;
