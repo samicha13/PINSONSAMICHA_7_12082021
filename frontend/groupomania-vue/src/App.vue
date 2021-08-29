@@ -43,6 +43,13 @@ body
   min-height: 100vh;
 }
 
+.login
+{
+width: 500px;
+margin-top : 3rem;
+margin-bottom : 2rem;
+border-radius : 50px;
+}
 img {
   max-width: 100%;
   border-radius: 8px;

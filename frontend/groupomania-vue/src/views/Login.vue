@@ -1,4 +1,7 @@
 <template>
+<div class=centerLogo>  
+    <img class="login" alt="Logo groupomania" src="../assets/logo-black.png"> 
+  </div>
   <div class="card">
     <h1 class="card__title" v-if="mode == 'login'">Connexion</h1>
     <h1 class="card__title" v-else>Inscription</h1>
@@ -83,7 +86,7 @@ export default {
         email: this.email,
         password: this.password,
       }).then(function () {
-        self.$router.push('/home');
+        self.$router.push('/profile');
       }, function (error) {
         console.log(error);
       })
