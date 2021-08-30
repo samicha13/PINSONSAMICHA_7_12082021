@@ -9,6 +9,9 @@
         Déconnexion
       </button>
     </div>
+    <button class="links">
+            <li><router-link to="/forum" aria-label="lien versle forum" style="display: inline-block;text-decoration:none;"> Retour sur le forum</router-link></li>
+        </button>
   </div>
 </template>
 
@@ -39,4 +42,15 @@ export default {
 </script>
 
 <style scoped>
+.links
+{
+  list-style-type: none;
+  font-size: 1.3em;
+  font-weight: 700;
+  margin-top: 2rem;
+}
+router-link
+{
+  text-decoration:none;
+}
 </style>>
