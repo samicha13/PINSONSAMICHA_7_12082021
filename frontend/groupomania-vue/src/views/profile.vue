@@ -1,8 +1,8 @@
 <template>
   <div class="card">
     <h1 class="card__title">Espace Perso</h1>
-    <p class="card__subtitle">Mes données :.</p>
-    <p>{{user.prenom}} {{user.nom}} {{user.email}}</p>
+    <p class="card__subtitle">Mes données :</p>
+    <p>Prénom: {{user.prenom}} Nom: {{user.nom}}<br> Mon email: {{user.email}}<br></p>
     <img :src="user.photo"/>
     <div class="form-row">
       <button @click="logout()" class="button">
@@ -22,7 +22,7 @@ export default {
       this.$router.push('/');
       return ;
     }
-    this.$store.dispatch('getUserInfos');
+  this.$store.dispatch('getUserInfos', this.$store.state.user.userId);
   },
   computed: {
     ...mapState({

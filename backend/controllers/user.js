@@ -129,3 +129,25 @@ exports.deleteUser = (req, res, next) => {
       }
     });
   };
+
+  exports.getUser = (req, res) => {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TK_SESSION);
+    const userId = decodedToken.userId;
+  
+    models.findOne({
+      where: {
+        id: req.params.id
+      } 
+    })
+      .then(user => {
+        if (!user) {
+          return res.status(404).json({ error: "Utilisateur introuvable !" });
+        }
+        if (user.id !== decodedToken.userId) {
+          return res.status(401).json({ error: "Vous n'avez pas les droits nécessaires pour afficher ces informations."});
+        }
+        res.status(200).json(user);
+      })
+      .catch(error => res.status(500).json({ error }));
+  }

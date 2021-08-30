@@ -88,10 +88,14 @@ const store = createStore({
       });
     },
    
-    getUserInfos: ({commit}) => {
-      instance.get('/login')
+    getUserInfos: ({state, commit}, userId) => {
+      instance({
+        method: 'GET',
+        url: '/auth/' + userId,
+        headers: { 'Authorization': 'Bearer ' + state.user.token }
+      })
       .then(function (response) {
-        commit('userInfos', response.data.infos);
+        commit('userInfos', response.data);
       })
       .catch(function () {
       });

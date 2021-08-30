@@ -21,7 +21,7 @@
       Adresse mail et/ou mot de passe invalide
     </div>
     <div class="form-row" v-if="mode == 'create' && status == 'error_create'">
-      Adresse mail déjà utilisée
+      Adresse mail déjà utilisée et/ou invalide
     </div>
     <div class="form-row">
       <button @click="login()" class="button" :class="{'button--disabled' : !validatedFields}" v-if="mode == 'login'">
