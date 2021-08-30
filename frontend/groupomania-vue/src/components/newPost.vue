@@ -11,7 +11,7 @@
         </div>
       </div>
       <div v-if="addSharedPost" class="sharedPost">
-        <h1 class="sharedPost_title"><img src="../../assets/share-icon.png" alt="Logo de partage d'articles" class="sharedPost_title--img">{{ sharedPost.title }}</h1>
+        <h1 class="sharedPost_title"><img src="../assets/share-icon.png" alt="Logo de partage d'articles" class="sharedPost_title--img">{{ sharedPost.title }}</h1>
       </div>
       <div class="form-div">
         <label for="content">Mesage: </label><br>

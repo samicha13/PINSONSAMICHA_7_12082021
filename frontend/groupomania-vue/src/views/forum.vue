@@ -3,26 +3,25 @@
     <div v-if="main">
       <p>Bienvenue sur le Forum ! Ici, vous pouvez écrire et/ou partager avec vos collègues des articles sur des sujets qui vous intéressent.</p>
       <p class="get-charter">NB : Avant de participer, merci de lire la <span class="get-charter--link" @click="getCharter">charte</span> indiquant les règles de convivialité à respecter.</p>
-      <button class="forum-btn" @click="newArticle">Publier un article</button>
-      <button class="forum-btn" @click="showUserArticles">Mes articles</button>
-      <button class="forum-btn" @click="readLatestArticles">Articles récents</button>
-      <button class="forum-btn" @click="findArticle">Rechercher un article</button>
+      <button class="forum-btn" @click="newPost">Publier un post</button>
+      <button class="forum-btn" @click="loadPosts">Tous les posts</button>
+      <button class="forum-btn" @click="onePost">Rechercher un post</button>
 
       <div v-if="publication && connected">
-        <NewArticle
-          :article="article"
+        <Newpost
+          :post="post"
           :cancelPublishRequest="cancelPublishRequest"
         />
       </div>
 
-      <div v-if="showArticles && connected">
-        <ShowArticles
+      <div v-if="showPosts && connected">
+        <ShowPost
           :user="user"
         />
       </div>
 
-      <div v-if="searchArticle">
-        <SearchArticle 
+      <div v-if="onePost">
+        <SearchPost 
           :user="user"
         /> 
       </div>
@@ -35,8 +34,8 @@
     </div>
 
     <div v-else>
-      <h1>{{ article.title }}</h1>
-      <p v-for="(paragraph, index) in article.content" :key="index" class="article-txt">{{ paragraph }}</p>
+      <h1>{{ post.title }}</h1>
+      <p v-for="(paragraph, index) in post.content" :key="index" class="article-txt">{{ paragraph }}</p>
       <button @click="returnToMain">Retour</button>
     </div>
   </div>
@@ -44,23 +43,23 @@
 
 <script>
   import { mapState, mapActions } from 'vuex';
-  import NewArticle from '@/components/forum/NewArticle';
-  import ShowArticles from '@/components/forum/ShowArticles';
-  import SearchArticle from '@/components/forum/SearchArticle';
-  import Charter from '@/components/forum/Charter';
+  import newPost from '@/components/newPost.vue';
+  import loadPosts from '@/components/loadPosts.vue';
+  import onePost from '@/components/onePost.vue';
+  import Charter from '@/components/Charter.vue';
   export default {
     name: 'Forum',
     components: {
-      NewArticle,
-      ShowArticles,
-      SearchArticle,
+      newPost,
+     loadPosts,
+      onePost,
       Charter
     },
     computed: {
-      ...mapState(['user', 'connected', 'main', 'charter', 'article', 'publication', 'showArticles', 'searchArticle'])
+      ...mapState(['user', 'connected', 'main', 'charter', 'post', 'publication', 'showPosts', 'onePost'])
     },
     methods: {
-      ...mapActions(['connectUser', 'showUser', 'newPage', 'getCharter', 'newArticle', 'showUserArticles', 'readLatestArticles', 'findArticle', 'cancelPublishRequest', 'returnToMain']),
+      ...mapActions(['connectUser', 'showUser', 'newPage', 'getCharter', 'newPost', 'showUserPosts', 'readLatestArticles', 'findPost', 'cancelPublishRequest', 'returnToMain']),
     },
     beforeMount() {
       if(localStorage.getItem('pseudo') !== null || sessionStorage.getItem('pseudo') !== null) {

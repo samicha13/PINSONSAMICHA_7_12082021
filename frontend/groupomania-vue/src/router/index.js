@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Login from "@/views/Login.vue";
 import Profile from "@/views/profile.vue";
 import Home from "@/views/home.vue";
+import Forum from '../views/forum';
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     component: Profile, 
     props:true 
   },
+  {
+    path: '/forum',
+    name: 'Forum',
+    component: Forum
+  }
 ]
 
 const router = createRouter({
