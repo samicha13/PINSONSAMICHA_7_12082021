@@ -64,7 +64,10 @@ const store = createStore({
           localStorage.setItem('token', response.data.token)
           resolve(response);
         })
-        
+        .catch(function (error) {
+          commit('setStatus', 'error_login');
+          reject(error);
+        });
       });
     },
     createAccount: ({commit}, userInfos) => {
