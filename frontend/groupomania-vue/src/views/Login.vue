@@ -89,14 +89,14 @@ export default {
       password: "",
     };
   },
-  mounted:  () =>{
+  mounted: function () {
     if (this.$store.state.user.userId != -1) {
       this.$router.push("/profile");
       return;
     }
   },
   computed: {
-    validatedFields:  () =>{
+    validatedFields: function () {
       if (this.mode == "create") {
         if (
           this.email != "" &&
@@ -119,29 +119,29 @@ export default {
     ...mapState(["status"]),
   },
   methods: {
-    switchToCreateAccount:  () => {
+    switchToCreateAccount: function () {
       this.mode = "create";
     },
-    switchToLogin:() =>{
+    switchToLogin: function() {
       this.mode = "login";
     },
-    login: () =>{
+    login: function() {
       const self = this;
       this.$store
         .dispatch("login", {
           email: this.email,
           password: this.password,
         })
-        .then(
-          () =>{
+        .then(function
+          () {
             self.$router.push("/profile");
           },
-          (error) => {
+          function(error) {
             console.log(error);
           }
         );
     },
-    createAccount: () => {
+    createAccount:function ()  {
       this.$store
         .dispatch("createAccount", {
           email: this.email,
@@ -149,11 +149,11 @@ export default {
           prenom: this.prenom,
           password: this.password,
         })
-        .then(
-          () => {
+        .then(function
+          ()  {
             this.login();
           },
-           (error) =>{
+           function(error) {
             console.log(error);
           }
         );
