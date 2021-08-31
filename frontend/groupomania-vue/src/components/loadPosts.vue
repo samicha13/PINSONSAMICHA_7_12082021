@@ -24,8 +24,9 @@
 
 <script>
 import deletePost from "./deletePost";
+import instance from "./Api.js";
 let moment = require("moment");
-let jwt = require("jsonwebtoken");
+
 import axios from "axios";
 export default {
   name: "loadPosts",
@@ -47,15 +48,14 @@ export default {
   },
   methods: {
     loadForum() {
-      let token = localStorage.getItem("token");
-      let decodedToken = jwt.verify(token, process.env.VUE_APP_TK_SESSION);
+       const token = localStorage.getItem("token"); 
       axios
-        .get("http://localhost:3000/api/posts/", {
+        .get("baseURL", {
           headers: { Authorization: "Bearer " + token },
         })
         .then((res) => {
           this.allPosts = res.data;
-          this.isAdmin = decodedToken.isAdmin;
+          
         })
         .catch((error) => {
           { error }

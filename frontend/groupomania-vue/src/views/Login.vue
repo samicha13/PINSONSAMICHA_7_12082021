@@ -89,14 +89,14 @@ export default {
       password: "",
     };
   },
-  mounted: function () {
+  mounted:  () =>{
     if (this.$store.state.user.userId != -1) {
       this.$router.push("/profile");
       return;
     }
   },
   computed: {
-    validatedFields: function () {
+    validatedFields:  () =>{
       if (this.mode == "create") {
         if (
           this.email != "" &&
@@ -119,13 +119,13 @@ export default {
     ...mapState(["status"]),
   },
   methods: {
-    switchToCreateAccount: function () {
+    switchToCreateAccount:  () => {
       this.mode = "create";
     },
-    switchToLogin: function () {
+    switchToLogin:() =>{
       this.mode = "login";
     },
-    login: function () {
+    login: () =>{
       const self = this;
       this.$store
         .dispatch("login", {
@@ -133,10 +133,10 @@ export default {
           password: this.password,
         })
         .then(
-          function () {
+          () =>{
             self.$router.push("/profile");
           },
-          function (error) {
+          (error) => {
             console.log(error);
           }
         );
@@ -153,7 +153,7 @@ export default {
           () => {
             this.login();
           },
-          function (error) {
+           (error) =>{
             console.log(error);
           }
         );

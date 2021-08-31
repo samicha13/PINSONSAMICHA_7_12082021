@@ -1,10 +1,7 @@
 import { createStore } from 'vuex'
 
 const axios = require('axios');
-
-const instance = axios.create({
-  baseURL: 'http://localhost:3000/api/'
-});
+import instance from "./Api.js"
 
 let user = localStorage.getItem('user');
 if (!user) {
@@ -104,8 +101,8 @@ const store = createStore({
 
   createPost: ({state},formData ) => {
     instance.post('/posts/' , formData,
-    
-   { 'Authorization': 'Bearer ' + state.user.token }
+    { headers: { 'Authorization': 'Bearer ' + state.user.token }}
+  
   )
       .then(() => {
         alert("Votre post a bien été creé !");
