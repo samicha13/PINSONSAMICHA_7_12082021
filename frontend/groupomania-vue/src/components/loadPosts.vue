@@ -10,7 +10,7 @@
         <div class="createdAt">
           <i>{{ moment(post.createdAt).fromNow() }}</i>
         </div>
-        {{ post.User.pseudo }}
+        {{ post.User.nom }}
         <div>
           <router-link class="one-post" :to="'/onePost/' + post.id">
           Voir les commentaires</router-link>
@@ -48,7 +48,7 @@ export default {
   methods: {
     loadForum() {
       let token = localStorage.getItem("token");
-      let decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
+      let decodedToken = jwt.verify(token, process.env.VUE_APP_TK_SESSION);
       axios
         .get("http://localhost:3000/api/posts/", {
           headers: { Authorization: "Bearer " + token },

@@ -64,6 +64,7 @@ const store = createStore({
         .then(function (response) {
           commit('setStatus', '');
           commit('logUser', response.data);
+          localStorage.setItem('token', response.data.token)
           resolve(response);
         })
         .catch(function (error) {
@@ -99,9 +100,28 @@ const store = createStore({
       })
       .catch(function () {
       });
-    }
+    },
+
+  createPost: ({state},formData ) => {
+    instance.post('/posts/' , formData,
+    
+   { 'Authorization': 'Bearer ' + state.user.token }
+  )
+      .then(() => {
+        alert("Votre post a bien été creé !");
+        document.location.reload();
+        this.$router.push("/forum");
+      })
+      .catch((error) => {
+        this.error = error.response.data;
+      });
   }
+
+
+}
+  
 })
+
 
 
 

@@ -42,7 +42,6 @@ body
   padding: 0% 5%;
   min-height: 100vh;
 }
-
 .login
 {
 width: 500px;
@@ -100,6 +99,4 @@ img {
     cursor:not-allowed;
     background:#cecece;
   }
-
-
 </style>

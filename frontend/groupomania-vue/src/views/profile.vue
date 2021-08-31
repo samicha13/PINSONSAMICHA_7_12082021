@@ -3,16 +3,21 @@
     <h1 class="card__title">Espace Perso</h1>
     <p class="card__subtitle">Mes données :</p>
     <p>Bonjour {{user.nom}} {{user.prenom}} <br> Mon email: {{user.email}}<br></p>
-    <img :src="user.photo"/>
+     <button class="links">
+            <li><router-link to="/forum" aria-label="lien versle forum" style="display: inline-block;text-decoration:none;"> Retour sur le forum</router-link></li>
+        </button>
     <div class="form-row">
       <button @click="logout()" class="button">
         Déconnexion
       </button>
     </div>
-    <button class="links">
-            <li><router-link to="/forum" aria-label="lien versle forum" style="display: inline-block;text-decoration:none;"> Retour sur le forum</router-link></li>
-        </button>
+     <div class="form-row">
+      <button class="button suppr" type="submit" @click.prevent="deleteProfile">Supprimer mon compte</button>
+    </div>
+
+   
   </div>
+
 </template>
 
 <script>
