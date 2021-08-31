@@ -9,8 +9,7 @@ exports.createPost = (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, process.env.TK_SESSION);
   const userId = decodedToken.userId;
-console.log(req.file);
-console.log(req.file.filename);
+
   if ( !req.body.titre  ||!req.body.message  || req.body.titre === "" || req.body.message === "") {
     return res.status(400).json({ error: "Merci de remplir tous les champs." });
   } const media =   req.body.message && req.file
