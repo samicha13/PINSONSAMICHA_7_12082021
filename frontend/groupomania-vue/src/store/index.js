@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 
-const axios = require('axios');
-import instance from "./Api.js"
+
+import instance from "../Api.js"
 
 let user = localStorage.getItem('user');
 if (!user) {
@@ -64,10 +64,7 @@ const store = createStore({
           localStorage.setItem('token', response.data.token)
           resolve(response);
         })
-        .catch(function (error) {
-          commit('setStatus', 'error_login');
-          reject(error);
-        });
+        
       });
     },
     createAccount: ({commit}, userInfos) => {

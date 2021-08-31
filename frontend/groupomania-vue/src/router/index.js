@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Login from "@/views/Login.vue";
 import Home from "@/views/home.vue";
-
+import store from "@/store/index";
 
 const routes = [
   {

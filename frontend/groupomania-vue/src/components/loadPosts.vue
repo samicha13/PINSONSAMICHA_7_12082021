@@ -24,10 +24,9 @@
 
 <script>
 import deletePost from "./deletePost";
-import instance from "./Api.js";
 let moment = require("moment");
 
-import axios from "axios";
+import axios from "../Api.js";
 export default {
   name: "loadPosts",
   components: {
@@ -48,15 +47,13 @@ export default {
   },
   methods: {
     loadForum() {
-       const token = localStorage.getItem("token"); 
+      let token = this.$store.state.user.token;
+      
       axios
-        .get("baseURL", {
+        .get("http://localhost:3000/api/posts/", {
           headers: { Authorization: "Bearer " + token },
         })
-        .then((res) => {
-          this.allPosts = res.data;
-          
-        })
+      
         .catch((error) => {
           { error }
         });
