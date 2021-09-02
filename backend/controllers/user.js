@@ -153,7 +153,7 @@ exports.deleteUser = (req, res, next) => {
   }
   //Middleware to get all user's accounts.
 exports.getAllUsers = (req, res, next) => {
-  User.findAll({attributes: ["id", "firstname", "lastname", "avatar"]})
+  models.findAll({attributes: ["id", "prenom", "nom", ]})
   .then (
     (users) => {res.status(200).json(users)}
   )
