@@ -8,6 +8,8 @@ export default {
   name: "Home",
   components: {
     login,
+   
+
   },
 };
 </script>

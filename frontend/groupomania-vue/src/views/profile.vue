@@ -2,7 +2,7 @@
   <div class="card">
     <h1 class="card__title">Espace Perso</h1>
     <p class="card__subtitle">Mes données :</p>
-    <p>Bonjour {{user.nom}} {{user.prenom}} <br> Mon email: {{user.email}}<br></p>
+    <p class="description">Bonjour {{user.nom}} {{user.prenom}}, bienvenue sur le forum! <br> Mon email: {{user.email}}<br></p>
      <button class="links">
             <li><router-link to="/forum" aria-label="lien versle forum" style="display: inline-block;text-decoration:none;"> Retour sur le forum</router-link></li>
         </button>
@@ -12,7 +12,9 @@
       </button>
     </div>
      <div class="form-row">
-      <button class="button suppr" type="submit" @click.prevent="deleteProfile">Supprimer mon compte</button>
+      <button class="button suppr"  @click="deleteUser()">
+        Supprimer mon compte
+        </button>
     </div>
 
    
@@ -21,6 +23,7 @@
 </template>
 
 <script>
+
 import { mapState } from 'vuex'
 export default {
   name: 'home',
@@ -31,6 +34,7 @@ export default {
       return ;
     }
   this.$store.dispatch('getUserInfos', this.$store.state.user.userId);
+   
   },
   computed: {
     ...mapState({
@@ -41,9 +45,17 @@ export default {
     logout: function () {
       this.$store.commit('logout');
       this.$router.push('/');
-    }
-  }
+    },
+ deleteUser: function () {
+  this.$store.dispatch('deleteUser');
+alert("votre compte à été correctement supprimé");
+this.logout();
+  },
+ 
+   
+},
 }
+
 </script>
 
 <style scoped>
@@ -53,9 +65,19 @@ export default {
   font-size: 1.3em;
   font-weight: 700;
   margin-top: 2rem;
+  margin-bottom:1rem;
 }
 router-link
 {
   text-decoration:none;
 }
+.button
+{
+  margin-top:1rem;
+  }
+
+  .description
+  {
+    margin-top:1rem;
+    }
 </style>>

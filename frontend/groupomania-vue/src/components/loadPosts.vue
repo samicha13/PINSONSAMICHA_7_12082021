@@ -1,6 +1,6 @@
 <template>
   <div >
-      <div id="message-card" v-for="post in allPosts" :key="post.id">
+      <div id="message-card" v-for="post in Posts" :key="post.id">
         <h1 class="title">{{ post.title }}</h1>
         <div class="content">
           <img class="imgLoad" :src="post.image" :alt="post.image"
@@ -11,10 +11,7 @@
           <i>{{ moment(post.createdAt).fromNow() }}</i>
         </div>
         {{ post.User.nom }}
-        <div>
-          <router-link class="one-post" :to="'/onePost/' + post.id">
-          Voir les commentaires</router-link>
-        </div>
+      
         <div class="adminDelete" v-if="isAdmin == true">
           <deletePost :id="post.id" />
         </div>
@@ -38,7 +35,7 @@ export default {
       token: "",
       userId: localStorage.getItem("id"),
       isAdmin: "",
-      allPosts: [],
+      Posts: [],
       idUserp: "",
       title: "",
       content: "",

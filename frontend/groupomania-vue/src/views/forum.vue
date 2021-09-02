@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       token: "",
-      allPosts: [],
+      Posts: [],
     };
   },
   methods: {
