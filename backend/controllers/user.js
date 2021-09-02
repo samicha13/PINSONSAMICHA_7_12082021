@@ -151,3 +151,13 @@ exports.deleteUser = (req, res, next) => {
       })
       .catch(error => res.status(500).json({ error }));
   }
+  //Middleware to get all user's accounts.
+exports.getAllUsers = (req, res, next) => {
+  User.findAll({attributes: ["id", "firstname", "lastname", "avatar"]})
+  .then (
+    (users) => {res.status(200).json(users)}
+  )
+  .catch (
+    (error) => {res.status(400).json({error})}
+  );
+};
