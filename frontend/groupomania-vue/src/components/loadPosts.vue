@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div id="message-card" v-for="post in posts" :key="post.id">
+  <div id="message-card" v-for="post in posts" :key="post.id"> 
       <div class="message-card-info" v-for="user in users" :key="user.id">
-        <div class="message-card-info-user" v-if="user.id == post.idUsers">
-          <h1 class="title">{{ post.titre }}</h1>
+        <div class="message-card-info-user" v-if="user.id == post.idUsers"> 
+          <h1 class="title">Titre :
+            {{ post.titre }}</h1>
           <h1>{{ post.message }}</h1>
           <div class="content">
             <img
@@ -23,14 +24,13 @@
           <div class="createdAt">
             <i>{{ moment(post.createdAt).fromNow() }}</i>
           </div>
-        </div>
-      </div>
-
+         </div>
+   </div>
       <div class="adminDelete" v-if="isAdmin == true">
         <deletePost :id="post.id" />
       </div>
-    </div>
-  </div>
+   </div> 
+   </div>
 </template>
 
 <script>
@@ -47,11 +47,10 @@ export default {
     return {
       moment: moment,
       token: "",
-      userId: localStorage.getItem("id"),
+      //userId: localStorage.getItem("UserId"),
       isAdmin: "",
       posts: [],
       users: [],
-      idUserp: "",
       title: "",
       content: "",
       createdAt: "",
@@ -85,7 +84,7 @@ export default {
         })
         .then((res) => {
           this.users = res.data;
-          console.log(this.users);
+          
         })
         .catch((error) => {
           {
