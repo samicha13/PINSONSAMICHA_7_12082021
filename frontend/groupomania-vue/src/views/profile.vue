@@ -5,6 +5,9 @@
     <p class="description">Bonjour {{user.nom}} {{user.prenom}}, bienvenue sur le forum! <br> Mon email: {{user.email}}<br></p>
      <button class="links">
             <li><router-link to="/forum" aria-label="lien versle forum" style="display: inline-block;text-decoration:none;"> Retour sur le forum</router-link></li>
+        </button><br>
+         <button class="links">
+            <li><router-link to="/home" aria-label="lien vers mes posts" style="display: inline-block;text-decoration:none;"> Voir mes posts</router-link></li>
         </button>
     <div class="form-row">
       <button @click="logout()" class="button">
@@ -26,7 +29,7 @@
 
 import { mapState } from 'vuex'
 export default {
-  name: 'home',
+  name: 'profile',
   mounted: function () {
     console.log(this.$store.state.user);
     if (this.$store.state.user.userId == -1) {

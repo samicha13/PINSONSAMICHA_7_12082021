@@ -4,15 +4,16 @@ import Home from "@/views/home.vue";
 import store from "@/store/index.js";
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home
-  },
+ 
   { 
     name: 'login',
     path: '/', 
     component: Login,
+  },
+   {
+    path: '/',
+    name: 'home',
+    component: Home
   },
   { 
     name: 'profile',
