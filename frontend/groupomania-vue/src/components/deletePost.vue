@@ -1,12 +1,9 @@
 <template>
-  <div>
-    <button type="submit" @click.prevent="deletePost">X</button>
-  </div>
+<i @click.prevent="deletePost" class="fa fa-trash" ></i>
 </template>
 
 
 <script>
-import axios from "axios";
 export default {
   name: "deletePost",
   props: {
@@ -19,28 +16,19 @@ export default {
   },
   methods: {
     deletePost() {
-      let token = localStorage.getItem("token");
-      axios
-        .delete("http://localhost:3000/api/posts/" + this.id, {
-          headers: { Authorization: " Bearer " + token },
-        })
-        .then(() => {
-          alert("Votre message a bien été supprimé !");
-          document.location.reload();
-        })
-        .catch((error) => {
-          { error }
-        });
+      this.$store
+        .dispatch("deletePost",this.id)
+       .then()
     },
   },
 };
 </script>
 
 <style scoped>
-button 
+.fa-trash 
 {
-  background-color: #BE545B;
-  color: white;
+   color: rgb(240, 54, 54) !important;
   font-size: 20px;
+  cursor: pointer;
 }
 </style>

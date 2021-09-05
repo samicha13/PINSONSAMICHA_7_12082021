@@ -142,6 +142,7 @@ export default {
         );
     },
     createAccount:function ()  {
+      let self = this
       this.$store
         .dispatch("createAccount", {
           email: this.email,
@@ -151,7 +152,7 @@ export default {
         })
         .then(function
           ()  {
-            this.login();
+            self.login();
           },
            function(error) {
             console.log(error);

@@ -1,58 +1,63 @@
 
 <template>
-  <div class="forme">
-    <form method="post" @submit.prevent="buttonNewPost" class="forum">
-      <div>
-        <h2 class="h2forum">Partagez avec la communauté !</h2>
-        <div>
-          <input
-            type="title"
-            aria-required="true"
-            aria-label="écrivez le titre de votre post"
-            id="title"
-            placeholder="Titre"
-            v-model="title"
-          />
-        </div>
-        <div>
-          <textarea
-            type="text"
-            aria-required="true"
-            aria-label="écrivez le texte de votre post"
-            id="content"
-            placeholder="Votre post !"
-            v-model="content"
-          />
-        </div>
-        <div class="input-group mb-3">
-          <input
-            type="file"
-            style="color: transparent"
-            aria-label="Choisissez l'image de votre post"
-            class="form-control"
-            id="inputGroupFileAddon03"
-            ref="file"
-            @change="selectFile()"
-          />
-        </div>
-        <div class="input-group mb-3">
-          <button
-            class="btn btn-outline-secondary"
-            type="submit"
-            @click.prevent="buttonNewPost"
-            id="button-addon1"
-          >
-            Envoyer
-          </button>
-        </div>
-        <div class="error" v-if="error">{{ error.error }}</div>
+  <div class="m-4">
+    <div class="d-flex card mb-3 shadow p-3 mb-5 bg-white rounded">
+     <form method="post" @submit.prevent="buttonNewPost">
+      <div class="form-group">
+        <h1 class="display-4">Partagez avec la communauté !</h1>
       </div>
+      <div class="form-group">
+        <label for="title">Titre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          aria-required="true"
+          aria-label="écrivez le titre de votre post"
+          placeholder="Titre"
+          v-model="title"
+        />
+      </div>
+      <div class="form-group">
+        <label for="content">Contenu</label>
+        <textarea
+          type="text"
+          class="form-control"
+          aria-required="true"
+          aria-label="écrivez le texte de votre post"
+          id="content"
+          placeholder="Votre post !"
+          v-model="content"
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputGroupFileAddon03">Ajoutez votre image</label>
+        <input
+          type="file"
+          style="color: transparent"
+          aria-label="Choisissez l'image de votre post"
+          class="form-control"
+          id="inputGroupFileAddon03"
+          ref="file"
+          @change="selectFile()"
+        />
+      </div>
+
+      <button
+        class="btn btn-outline-secondary m-4"
+        type="submit"
+        @click.prevent="buttonNewPost"
+        id="button-addon1"
+      >
+        Submit
+      </button>
+      <div class="error" v-if="error">{{ error.error }}</div>
     </form>
+    </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "newPost",
   data() {
@@ -72,15 +77,13 @@ export default {
       if (this.file !== null) {
         formData.append("image", this.file);
       }
-   this.$store.dispatch('createPost',formData)
+      this.$store.dispatch("createPost", formData);
     },
     selectFile() {
       this.file = this.$refs.file.files[0];
     },
   },
 };
-
-
 </script>
 
 <style>
@@ -99,13 +102,5 @@ export default {
 .centrer {
   display: flex;
   justify-content: center;
-}
-#button-addon1,
-#title,
-#content {
-  font-size: 1em;
-}
-.h2forum {
-  color: #000000;
 }
 </style>

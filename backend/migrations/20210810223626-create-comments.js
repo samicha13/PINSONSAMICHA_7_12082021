@@ -12,7 +12,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       idPosts: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Post', // name of Target model
+          key: 'id', // key in Target model that we're referencing
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       comment: {
         type: Sequelize.STRING

@@ -3,12 +3,13 @@
         <img src="../assets/logo-black.png" alt="Logo groupomania" />
         <ul class="links">
             <li><router-link to="/profile" aria-label="lien vers page profil" style="display: inline-block;text-decoration:none;"> Mon Profil</router-link></li>
+        
         </ul>
-        <h2>Accueil</h2>
-        <div class= centrer>
+        <h2 class="display-4">Accueil</h2>
+        <div class= "centrer">
             <newPost />
         </div>
-        <div class = center>
+        <div class = "center">
             <loadPosts />
         </div>
     </section>

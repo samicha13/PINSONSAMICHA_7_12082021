@@ -2,7 +2,9 @@ const models = require('../models/post');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const modelsUser = require('../models/user');
+const modelsComment = require('../models/comment');
 const { post } = require('../routes/user');
+const { Op } = require("sequelize");
 
 // Creation d'un post 
 exports.createPost = (req, res, next) => {
@@ -87,8 +89,7 @@ else{
 // voir tout les posts
 
 exports.getAllPosts = (req, res, next) => {
-    modelsUser.hasMany(models, {foreignKey: 'idUsers'});
-models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
+
     models.findAll({
       order: [["updatedAt", "DESC"]],
       attributes: [
@@ -97,13 +98,25 @@ models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
         "titre",
         "message",
         "media",
+        "usersLikes",
+        "likes",
         "createdAt",
         "updatedAt",
       ],
       include: [
         {
           model: modelsUser, // recuperer le nom et prénom de la personne qui post
-          attributes: ["nom", "prenom"],
+          attributes: ["nom", "prenom"]
+        },
+        {
+          model: modelsComment, // recuperer les commentaire du  poste
+          attributes: ["id","comment","createdAt"],
+          include:[
+            {
+              model:modelsUser,
+              attributes: ["nom", "prenom"]
+            }
+          ]
         },
       ],
     })
@@ -117,6 +130,57 @@ models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
       });
   };
   
+//  voir les posts d'utilisateur
+exports.getMyPosts=(req, res, next)=>{
+
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.TK_SESSION);
+  const userId = decodedToken.userId;
+  
+    models.findAll({
+     where: {
+      idUsers: {
+        [Op.eq]: userId
+      }
+    },
+      order: [["updatedAt", "DESC"]],
+      attributes: [
+        "id",
+        "idUsers",
+        "titre",
+        "message",
+        "media",
+        "usersLikes",
+        "likes",
+        "createdAt",
+        "updatedAt",
+      ],
+      include: [
+        {
+          model: modelsUser, // recuperer le nom et prénom de la personne qui post
+          attributes: ["nom", "prenom"],
+        },
+        {
+          model: modelsComment, // recuperer les commentaire du  poste
+          attributes: ["id","comment","createdAt"],
+          include:[
+            {
+              model:modelsUser,
+              attributes: ["nom", "prenom"]
+            }
+          ]
+        }
+      ],
+    })
+      .then((posts) => {
+        res.status(200).json(posts);
+      })
+      .catch((error) => {
+        res.status(400).json({
+          error: error,
+        });
+      });
+}
 // Avoir un post en particulier
 
   exports.getOnePost = (req, res, next) => {
@@ -160,13 +224,31 @@ models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
     const like = req.body.like;
     const postId = req.params.id;
   
-    if (like === 1) {
     models.findOne({ where: { id: req.params.id }})
       .then((post) => 
       {
         let usersLikes = post.usersLikes; // on stocke dans une variable
         if (usersLikes !== null && usersLikes.indexOf(userId) !== -1) { //si userlike pas nul et déjà présent dans le tableau alors 
-          return res.status(401).json({ message: "Vous ne pouvez pas liker 2 fois le même message" });
+          usersLikes = usersLikes
+          .replace(", " + userId,'')
+          .replace("" + userId,'');
+
+        return  models.increment(
+            { likes: -1 },
+            { where: { id: postId }}
+          )
+            .then(() => {
+              models.update(
+                { usersLikes: usersLikes },
+                { where: { id: postId }}
+              )
+                .then(() => {
+                  return res.status(200).json({ message: "Like supprimé" })
+                })
+                .catch(error => res.status(400).json({ error }));
+            })
+            .catch(error => res.status(400).json({ error }));
+        //  return res.status(401).json({ message: "Vous ne pouvez pas liker 2 fois le même message" });
         } 
         if (usersLikes === null) {
           usersLikes = userId;
@@ -196,5 +278,4 @@ models.belongsTo(modelsUser, {foreignKey: 'idUsers'});
         }
       })
       .catch(error => res.status(500).json({ error }));
-    }
   };

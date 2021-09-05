@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 
 import instance from "../Api.js"
+import router from '../router/index'
 
 let user = localStorage.getItem('user');
 if (!user) {
@@ -31,6 +32,7 @@ const store = createStore({
             email: '',
             photo: '',
         },
+        posts:[]
     },
     mutations: {
         setStatus: function (state, status) {
@@ -44,12 +46,17 @@ const store = createStore({
         userInfos: function (state, userInfos) {
             state.userInfos = userInfos;
         },
+        LOAD_POSTS: function (state, posts) {
+            state.posts = posts.data
+        
+        },
         logout: function (state) {
             state.user = {
                 userId: -1,
                 token: '',
             }
-            localStorage.removeItem('user');
+            localStorage.removeItem('user') 
+            router.push('/')
         }
     },
     actions: {
@@ -96,6 +103,19 @@ const store = createStore({
                 .catch(function () {
                 });
         },
+        loadPosts: async ({ state, commit },myposts="") => {
+            
+            await  instance
+                  .get("http://localhost:3000/api/posts/"+myposts, {
+                  headers: { Authorization: "Bearer " + state.user.token },
+                  })
+                  .then((response)=>{
+                      commit('LOAD_POSTS',response)
+                  })
+                  .catch((error) => {
+                  console.error(error) 
+                  }); 
+        },
         createPost: ({ state }, formData) => {
             instance.post('/posts/', formData,
                 { headers: { 'Authorization': 'Bearer ' + state.user.token } }
@@ -109,8 +129,102 @@ const store = createStore({
                     this.error = error.response.data;
                 });
         },
-        deleteUser({ state }) {
-            const userId = state.user.userId;
+        createComment: ({ state }, data) => {
+            instance.post("http://localhost:3000/api/posts/"+data.idPosts+'/comment/', {comment:data.comment},
+                { headers: { 'Authorization': 'Bearer ' + state.user.token } }
+            )
+                .then(function () {
+                    alert("Votre Comment a bien été crée !");
+                    document.location.reload();
+                    //this.$router.push("/forum");
+                })
+                .catch((error) => {
+                    this.error = error.response.data;
+                });
+        },
+        loadComments: async ({ state, commit },myposts="") => {
+            
+            await  instance
+                  .get("http://localhost:3000/api/posts/"+myposts, {
+                  headers: { Authorization: "Bearer " + state.user.token },
+                  })
+                  .then((response)=>{
+                      commit('LOAD_POSTS',response)
+                  })
+                  .catch((error) => {
+                  console.error(error) 
+                  }); 
+        },
+        updateComment:async ({ state }, editedComment) => {
+            let id = editedComment.id
+            let comment = editedComment.comment
+               await instance
+                .put('/posts/comment',{id,comment}, { 'Authorization': 'Bearer ' + state.user.token })
+                .then(function () {
+                   document.location.reload();
+                })
+                .catch((error) => {console.error(error.response.data)});
+        },
+        deleteComment: ({ state }, commentId) => {
+            
+            var userselection = confirm("Supprimez cette commentaire ?");
+            if (userselection == true)
+            {
+                let id = commentId
+                instance
+                .delete("http://localhost:3000/api/posts/1/comment/"+id,{data:{id}, headers: { 'Authorization': 'Bearer ' + state.user.token } })
+                .then(function () {
+                   document.location.reload();
+                })
+                .catch((error) => {console.error(error.response.data)});
+            }
+        },
+        updatePost:async ({ state }, post) => {
+            let id = post.id
+            let message = post.content
+               await instance
+                .put('/posts',{id,message}, { 'Authorization': 'Bearer ' + state.user.token })
+                .then(function () {
+                   document.location.reload();
+                })
+                .catch((error) => {console.error(error.response.data)});
+        },
+        deletePost: ({ state }, postId) => {
+            
+            var userselection = confirm("Supprimez ce post ?");
+            if (userselection == true)
+            {
+                let id = postId
+                instance
+                .delete('/posts',{data:{id}, headers: { 'Authorization': 'Bearer ' + state.user.token } })
+                .then(function () {
+                   document.location.reload();
+                })
+                .catch((error) => {console.error(error.response.data)});
+            }
+        },
+        likePost:({ state },post)=>{
+            
+            let like = (post.usersLikes!=null && post.usersLikes.includes(state.user.userId))?0:1
+            instance.post('/posts/'+post.id+'/like',  {
+                like,
+             },
+            { headers: { 'Authorization': 'Bearer ' + state.user.token } }
+         )
+             .then(function () {
+                
+             document.location.reload();
+             })
+            .catch((error) => {
+                console.error( error.message)
+            });
+        },
+        deleteUser({ state,commit }) {
+
+            var userselection = confirm("voulez vous vraiment Supprimez votre compte ?");
+            if (userselection == true)
+            {
+                const userId = state.user.userId;
             instance({
                 method: 'DELETE',
                 url: '/auth/' + userId,
@@ -119,19 +233,29 @@ const store = createStore({
                     password: state.user.password
                 }
             })
-                .then(response => {
-                    console.log(response);
-                   this.commit("logout")
-                       
+                .then(() => {
+                    alert("votre compte à été correctement supprimé");
+                   commit("logout")
+                   
                 })
                 .catch(error => {
                     alert("Une erreur est survenue. Veuillez vérifiez que votre mot de passe est correct.");
                     console.log(error);
                 });
+            }
         },
         
         
+    },
+    getters:{
+        posts: state => {
+            return state.posts
+          },
+          currentUser :  state => {
+            return state.user
+          }
     }
+
 });
 
 

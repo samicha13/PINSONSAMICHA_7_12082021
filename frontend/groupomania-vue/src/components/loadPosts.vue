@@ -1,127 +1,42 @@
 <template>
-  <div>
   <div id="message-card" v-for="post in posts" :key="post.id"> 
-      <div class="message-card-info" v-for="user in users" :key="user.id">
-        <div class="message-card-info-user" v-if="user.id == post.idUsers"> 
-          <h1 class="title">Titre :
-            {{ post.titre }}</h1>
-          <h1>{{ post.message }}</h1>
-          <div class="content">
-            <img
-              class="imgLoad"
-              :src="post.image"
-              :alt="post.image"
-              v-if="post.image != null"
-            />
-          </div>
-
-          <div>
-            <span id="user-nom">Rédigié par {{ user.nom }} {{ user.prenom }} </span>
-            <span id="user-prenom"></span>
-          </div>
-
-          
-          <div class="createdAt">
-            <i>{{ moment(post.createdAt).fromNow() }}</i>
-          </div>
-         </div>
-   </div>
-      <div class="adminDelete" v-if="isAdmin == true">
-        <deletePost :id="post.id" />
-      </div>
-   </div> 
+    <one-post :post="post"/>
    </div>
 </template>
 
 <script>
-import deletePost from "./deletePost";
-let moment = require("moment");
+import onePost from "./onePost"
+import { mapGetters } from 'vuex'
 
-import axios from "../Api.js";
 export default {
   name: "loadPosts",
+  props: {
+    myposts:String,
+  },
   components: {
-    deletePost,
+    onePost
   },
   data() {
     return {
-      moment: moment,
-      token: "",
-      //userId: localStorage.getItem("UserId"),
-      isAdmin: "",
-      posts: [],
-      users: [],
-      title: "",
-      content: "",
-      createdAt: "",
     };
   },
   methods: {
-    loadForum() {
-      let token = this.$store.state.user.token;
-
-      axios
-        .get("http://localhost:3000/api/posts/", {
-          headers: { Authorization: "Bearer " + token },
-        })
-        .then((res) => {
-          this.posts = res.data;
-          console.log(this.posts);
-        })
-
-        .catch((error) => {
-          {
-            error;
-          }
-        });
-    },
-
-    loadUser() {
-      let token = this.$store.state.user.token;
-      axios
-        .get("http://localhost:3000/api/auth/", {
-          headers: { Authorization: "Bearer " + token },
-        })
-        .then((res) => {
-          this.users = res.data;
-          
-        })
-        .catch((error) => {
-          {
-            error;
-          }
-        });
-    },
+  
+    
+  },
+  computed:{
+    ...mapGetters([
+      'posts',
+    ])
   },
   mounted() {
-    this.loadForum();
-    this.loadUser();
+    this.$store
+        .dispatch("loadPosts",this.myposts)
+       .then()
+    
   },
 };
 </script>
 
 <style>
-.imgLoad {
-  height: 500px;
-  max-height: 100%;
-  width: 600px;
-}
-.size {
-  font-size: 1.2em;
-}
-.title {
-  margin-top: 40px;
-  font-size: 1.7em;
-}
-#message-card {
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  padding: 10px;
-  background-color: lightblue;
-}
-.adminDelete {
-  margin-top: 10px;
-}
 </style>

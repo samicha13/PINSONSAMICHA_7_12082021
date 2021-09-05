@@ -31,7 +31,6 @@ import { mapState } from 'vuex'
 export default {
   name: 'profile',
   mounted: function () {
-    console.log(this.$store.state.user);
     if (this.$store.state.user.userId == -1) {
       this.$router.push('/');
       return ;
@@ -51,8 +50,6 @@ export default {
     },
  deleteUser: function () {
   this.$store.dispatch('deleteUser');
-alert("votre compte à été correctement supprimé");
-this.logout();
   },
  
    

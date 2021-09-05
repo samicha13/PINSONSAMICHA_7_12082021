@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const models = require("../models/user");
+const commentModel = require('../models/comment');
+const postModel = require('../models/post');
 const sequelize = require('../config/sequelize-config');
 require("dotenv").config();
 const auth = require("../middlewares/auth");
@@ -103,26 +105,30 @@ exports.deleteUser = (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.TK_SESSION);
     const userId = decodedToken.userId;
     const isAdmin = decodedToken.isAdmin;
-
     models.findOne({
       where: {
         id: req.params.id, 
       },
     }).then((user) => {
       if (user.id === userId || isAdmin === true) {
-        user
-          .destroy()
-          .then(() => {
-            res.status(200).json({
-              message: "Compte supprimé !",
-            });
-          })
-          .catch((error) => {
-            res.status(400).json({
-              error: error,
-              message: "Le compte n'a pas pu être supprimé",
-            });
+        
+        commentModel.destroy({where: {idUser: userId}}).then(function () {
+          postModel.destroy({where: {idUsers: userId}}).then(function () {
+                    user
+                  .destroy()
+                  .then(() => {
+                    res.status(200).json({
+                      message: "Compte supprimé !",
+                    });
+                  })
+                  .catch((error) => {
+                    res.status(400).json({
+                      error: error,
+                      message: "Le compte n'a pas pu être supprimé",
+                    });
+                  });
           });
+        });
       }
       else {
         res.status(401).json({message:"vous n'avez pas les droits nécessaires pour supprimer le compte"});

@@ -22,6 +22,9 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.use('/images', express.static('images'))
+
+
 app.use(bodyParser.json());
 
 
