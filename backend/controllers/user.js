@@ -6,6 +6,7 @@ const postModel = require('../models/post');
 const sequelize = require('../config/sequelize-config');
 require("dotenv").config();
 const auth = require("../middlewares/auth");
+//const { or } = require("sequelize/types");
 
 const email_reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const password_reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!.@#$%^&*])(?=.{8,})/;
@@ -13,6 +14,7 @@ const password_reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!.@#$%^&*])(?=.{8,
 // Création d'un compte 
 
 exports.signup = (req, res, next) => {
+  
   if ( // condition on vérifie l'existence de l'objet et s'il n'est pas vide
     !req.body.email  ||
     !req.body.nom ||
@@ -21,12 +23,16 @@ exports.signup = (req, res, next) => {
     req.body.email == "" ||
     req.body.nom == "" ||
     req.body.prenom == "" ||
-    req.body.password == ""
+    req.body.password == "" 
+    
+    
   ) {
     return res
       .status(400)
       .json({ error: "Merci de remplir tous les champs !" });
   }
+
+
   if (!email_reg.test(req.body.email)) {
     return res.status(400).json({ error: "Email incorrect !" });
   }
@@ -46,8 +52,10 @@ exports.signup = (req, res, next) => {
         nom: req.body.nom,
         prenom: req.body.prenom,
         password: hash,
-        isAdmin: false,
+      
+       
       };
+       console.log(req.body);
       models.create(user)
         .then((user) => {
           res.status(201).json({
@@ -150,7 +158,7 @@ exports.deleteUser = (req, res, next) => {
         if (!user) {
           return res.status(404).json({ error: "Utilisateur introuvable !" });
         }
-        if (user.id !== decodedToken.userId) {
+        if (user.id !== userId) {
           return res.status(401).json({ error: "Vous n'avez pas les droits nécessaires pour afficher ces informations."});
         }
         res.status(200).json(user);
@@ -167,3 +175,23 @@ exports.getAllUsers = (req, res, next) => {
     (error) => {res.status(400).json({error})}
   );
 };
+exports.getUsersInfos=(req, res, next)=>
+{
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, process.env.TK_SESSION);// token afin d'avoir accés aux sauces
+  const userId = decodedToken.userId;
+console.log(decodedToken);
+  if(userId){
+console.log(userId);
+    models.findOne({ 
+      
+      where: {
+        id: userId
+      } 
+    }).then(user => {res.status(200).json(user)}  )
+
+  } else {
+    res.status(400).json({message:"token invalide"})
+  }
+  
+}

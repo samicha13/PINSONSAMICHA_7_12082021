@@ -39,11 +39,11 @@ const store = createStore({
             state.status = status;
         },
         logUser: function (state, user) {
-            instance.defaults.headers.common['Authorization'] = user.token;
-            localStorage.setItem('user', JSON.stringify(user));
+           
             state.user = user;
         },
-        userInfos: function (state, userInfos) {
+        userInfos: function (state, userInfos) { 
+            console.log(userInfos);
             state.userInfos = userInfos;
         },
         LOAD_POSTS: function (state, posts) {
@@ -91,10 +91,10 @@ const store = createStore({
                     });
             });
         },
-        getUserInfos: ({ state, commit }, userId) => {
+        getUserInfos: ({ state, commit }, ) => {
             instance({
                 method: 'GET',
-                url: '/auth/' + userId,
+                url: '/auth/user/me' ,
                 headers: { 'Authorization': 'Bearer ' + state.user.token }
             })
                 .then(function (response) {
@@ -134,7 +134,7 @@ const store = createStore({
                 { headers: { 'Authorization': 'Bearer ' + state.user.token } }
             )
                 .then(function () {
-                    alert("Votre Comment a bien été crée !");
+                    alert("Votre Commentaire a bien été créé !");
                     document.location.reload();
                     //this.$router.push("/forum");
                 })
@@ -167,7 +167,7 @@ const store = createStore({
         },
         deleteComment: ({ state }, commentId) => {
             
-            var userselection = confirm("Supprimez cette commentaire ?");
+            var userselection = confirm("Supprimer ce commentaire ?");
             if (userselection == true)
             {
                 let id = commentId

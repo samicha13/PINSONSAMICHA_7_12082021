@@ -9,4 +9,5 @@ router.post("/login", userCtrl.login);
 router.delete('/:id',auth, userCtrl.deleteUser);
 router.get('/:id', auth, userCtrl.getUser);
 router.get('/', auth, userCtrl.getAllUsers);
+router.get('/user/me', userCtrl.getUsersInfos);
 module.exports = router;

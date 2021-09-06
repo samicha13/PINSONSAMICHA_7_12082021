@@ -6,7 +6,7 @@
         </ul>
         
         <div class = "center">
-          <h1 class="display-4">Mes Articles</h1>
+          <h1 class="display-4">Mes Posts</h1>
             <loadPosts :myposts="'myposts/get'"  />
         </div>
     </section>

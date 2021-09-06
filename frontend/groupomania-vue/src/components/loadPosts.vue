@@ -1,6 +1,8 @@
 <template>
+<div>
   <div id="message-card" v-for="post in posts" :key="post.id"> 
     <one-post :post="post"/>
+   </div>
    </div>
 </template>
 
