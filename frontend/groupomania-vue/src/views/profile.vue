@@ -1,8 +1,7 @@
 <template>
-  <div class="card">
+  <div class="card" v-if="user">
     <h1 class="card__title">Espace Perso</h1>
     <p class="card__subtitle">Mes données :</p>
-    {{user}}
     <p class="description">Bonjour {{user.nom}} {{user.prenom}}, bienvenue sur le forum! <br> Mon email: {{user.email}}<br></p>
      <button class="links">
             <li><router-link to="/forum" aria-label="lien versle forum" style="display: inline-block;text-decoration:none;"> Retour sur le forum</router-link></li>

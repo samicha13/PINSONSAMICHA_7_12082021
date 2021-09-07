@@ -2,6 +2,7 @@
   <div class="comments-container">
     <ul id="comments-list" class="comments-list">
       <li v-for="comment in comments" :key="comment.comment">
+     
         <div class="comment-main-level">
           <div class="comment-box">
             <div class="comment-head">
@@ -9,12 +10,12 @@
                 <a>{{ comment.User.nom }} {{ comment.User.prenom }}</a>
               </h6>
               <span>{{ moment(comment.createdAt).fromNow() }}</span>
-               <div v-if="comment.idUser==currentUser.userId || currentUser.isAdmin">
+               <div v-if="comment.idUsers===currentUser.userId || currentUser.isAdmin">
               <i class="fa fa-edit" @click="editedComment.id=comment.id;editedComment.comment=comment.comment"></i>
               <delete-comment :id="comment.id" />
             </div>
             </div>
-            <div class="box"  v-if="editedComment.id==comment.id && (comment.idUser==currentUser.userId || currentUser.isAdmin)">
+            <div class="box"  v-if="editedComment.id==comment.id && (comment.idUsers===currentUser.userId || currentUser.isAdmin)">
                 <input
                 v-model="editedComment.comment"
                   type="text"
@@ -39,6 +40,7 @@
 let moment = require("moment");
 
 import deleteComment from "./deleteComment.vue";
+import { mapGetters } from 'vuex'
 
 export default {
   name: "loadComments",
@@ -62,7 +64,11 @@ export default {
       this.$store.dispatch("updateComment", this.editedComment).then(() => {});
     },
   },
-  computed: {},
+  computed: {
+    ...mapGetters([
+      'currentUser'
+    ])
+  },
   mounted() {},
 };
 </script>

@@ -3,35 +3,13 @@ import { createStore } from 'vuex'
 import instance from "../Api.js"
 import router from '../router/index'
 
-let user = localStorage.getItem('user');
-if (!user) {
-    user = {
-        userId: -1,
-        token: '',
-    };
-} else {
-    try {
-        user = JSON.parse(user);
-        instance.defaults.headers.common['Authorization'] = user.token;
-    } catch (ex) {
-        user = {
-            userId: -1,
-            token: '',
-        };
-    }
-}
 
 // Create a new store instance.
 const store = createStore({
     state: {
         status: '',
-        user: user,
-        /*userInfos: {
-            nom: '',
-            prenom: '',
-            email: '',
-           
-        },*/
+        user: null,
+        token:null,
         posts:[]
     },
     mutations: {
@@ -57,7 +35,9 @@ const store = createStore({
             }
             localStorage.removeItem('user') 
             router.push('/')
-        }
+        },
+        SET_TOKEN : (state,token)=> state.token = token
+
     },
     actions: {
         login: ({ commit }, userInfos) => {
@@ -91,17 +71,21 @@ const store = createStore({
             });
         },
         getUserInfos: ({ state, commit }, ) => {
-            return new Promise ((resolve) => {
+            return new Promise ((resolve,reject) => {
+                
                 return instance({
                 method: 'GET',
                 url: '/auth/user/me' ,
-                headers: { 'Authorization': 'Bearer ' + state.user.token }
+                headers: { 'Authorization': 'Bearer ' + state.token }
             })
                 .then( (response) => {
                     commit('setStatus','created'),
                     commit('userInfos', response.data);
                     resolve('')
-                })
+                }) 
+                .catch(function (error) {
+                    reject(error);
+                });
             })
         },
         loadPosts: async ({ state, commit },myposts="") => {
@@ -143,9 +127,9 @@ const store = createStore({
                     this.error = error.response.data;
                 });
         },
-        loadComments: async ({ state, commit },myposts="") => {
+        loadComments:  ({ state, commit },myposts="") => {
             
-            await  instance
+              instance
                   .get("http://localhost:3000/api/posts/"+myposts, {
                   headers: { Authorization: "Bearer " + state.user.token },
                   })
@@ -156,10 +140,10 @@ const store = createStore({
                   console.error(error) 
                   }); 
         },
-        updateComment:async ({ state }, editedComment) => {
+        updateComment:({ state }, editedComment) => {
             let id = editedComment.id
             let comment = editedComment.comment
-               await instance
+               instance
                 .put('/posts/comment',{id,comment}, { 'Authorization': 'Bearer ' + state.user.token })
                 .then(function () {
                    document.location.reload();
@@ -180,10 +164,10 @@ const store = createStore({
                 .catch((error) => {console.error(error.response.data)});
             }
         },
-        updatePost:async ({ state }, post) => {
+        updatePost: ({ state }, post) => {
             let id = post.id
             let message = post.content
-               await instance
+                instance
                 .put('/posts',{id,message}, { 'Authorization': 'Bearer ' + state.user.token })
                 .then(function () {
                    document.location.reload();
