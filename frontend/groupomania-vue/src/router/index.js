@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Login from "@/views/Login.vue";
 import Home from "@/views/home.vue";
-import store from "@/store/index.js";
+
 
 const routes = [
  
@@ -26,12 +26,8 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/profile.vue"),
     beforeEnter: (to, from, next) => {
-      let token = store.state.user.token;
-      if (token) {
-        next();
-      } else {
-        next({ name: "login" });
-      }
+      next()
+     
     },
   
   },
@@ -41,12 +37,7 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/forum.vue"),
     beforeEnter: (to, from, next) => {
-      let token = store.state.user.token;
-      if (token) {
-        next();
-      } else {
-        next({ name: "login" });
-      }
+     next()
     },
   },
 ]

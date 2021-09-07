@@ -26,12 +26,12 @@ const store = createStore({
     state: {
         status: '',
         user: user,
-        userInfos: {
+        /*userInfos: {
             nom: '',
             prenom: '',
             email: '',
-            photo: '',
-        },
+           
+        },*/
         posts:[]
     },
     mutations: {
@@ -42,10 +42,10 @@ const store = createStore({
            
             state.user = user;
         },
-        userInfos: function (state, userInfos) { 
-            console.log(userInfos);
-            state.userInfos = userInfos;
-        },
+      userInfos: function(state, user) {
+          console.log(user);
+          state.user = user ;
+      },
         LOAD_POSTS: function (state, posts) {
             state.posts = posts.data
         
@@ -66,8 +66,7 @@ const store = createStore({
                 instance.post('/auth/login', userInfos)
                     .then(function (response) {
                         commit('setStatus', '');
-                        commit('logUser', response.data);
-                        localStorage.setItem('token', response.data.token)
+                        localStorage.setItem('token', response.data.token);
                         resolve(response);
                     })
                     .catch(function (error) {
@@ -92,16 +91,18 @@ const store = createStore({
             });
         },
         getUserInfos: ({ state, commit }, ) => {
-            instance({
+            return new Promise ((resolve) => {
+                return instance({
                 method: 'GET',
                 url: '/auth/user/me' ,
                 headers: { 'Authorization': 'Bearer ' + state.user.token }
             })
-                .then(function (response) {
+                .then( (response) => {
+                    commit('setStatus','created'),
                     commit('userInfos', response.data);
+                    resolve('')
                 })
-                .catch(function () {
-                });
+            })
         },
         loadPosts: async ({ state, commit },myposts="") => {
             

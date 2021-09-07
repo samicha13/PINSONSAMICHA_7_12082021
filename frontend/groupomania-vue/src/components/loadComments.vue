@@ -9,11 +9,12 @@
                 <a>{{ comment.User.nom }} {{ comment.User.prenom }}</a>
               </h6>
               <span>{{ moment(comment.createdAt).fromNow() }}</span>
+               <div v-if="comment.idUser==currentUser.userId || currentUser.isAdmin">
               <i class="fa fa-edit" @click="editedComment.id=comment.id;editedComment.comment=comment.comment"></i>
               <delete-comment :id="comment.id" />
             </div>
-
-            <div class="box"  v-if="editedComment.id==comment.id">
+            </div>
+            <div class="box"  v-if="editedComment.id==comment.id && (comment.idUser==currentUser.userId || currentUser.isAdmin)">
                 <input
                 v-model="editedComment.comment"
                   type="text"

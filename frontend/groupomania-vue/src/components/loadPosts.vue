@@ -29,6 +29,7 @@ export default {
   computed:{
     ...mapGetters([
       'posts',
+      'currentUser'
     ])
   },
   mounted() {

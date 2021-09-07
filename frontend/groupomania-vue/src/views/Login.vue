@@ -126,17 +126,19 @@ export default {
       this.mode = "login";
     },
     login: function() {
-      const self = this;
       this.$store
         .dispatch("login", {
           email: this.email,
           password: this.password,
         })
-        .then(function
-          () {
-            self.$router.push("/profile");
+        .then(() => {
+           this.$store.dispatch("getUserInfos")
+           .then(()=>   {
+              console.log('toto');
+             this.$router.push("/profile")  
+           })
           },
-          function(error) {
+           (error) => {
             console.log(error);
           }
         );

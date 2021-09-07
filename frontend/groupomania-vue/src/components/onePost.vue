@@ -3,7 +3,7 @@
     
 <div class="d-flex card mb-3 shadow p-3 mb-5 bg-white rounded">
 
- <div v-if="post.idUsers==currentUser.userId " class="post-head">
+ <div v-if="post.idUsers==currentUser.userId || currentUser.isAdmin" class="post-head">
               
             <delete-post  :id="post.id"/>
                    
@@ -20,7 +20,7 @@
   <div class="card-body">
     <h5 class="card-title">{{post.titre}}</h5>
 
-    <div v-if="editedPost.id==post.id">
+    <div v-if="editedPost.id==post.id &&( post.idUsers ==currentUser.userId ||currentUser.isAdmin)">
 
 <div class="form-group">
         <textarea
@@ -47,7 +47,7 @@
         </p>
         <p v-if="post.usersLikes!=null" >
        
-       <i v-if="post.usersLikes.includes(currentUser.userId)" @click="likePost(post)"
+       <i v-if="post.usersLikes.includes(currentUser.userId )" @click="likePost(post)"
             class="fas fa-thumbs-up"></i>
             <i v-else @click="likePost(post)" class="far fa-thumbs-up"></i>
              <small v-if="post.likes!=0" class="text-muted"> {{ post.likes }} </small> 
