@@ -103,7 +103,7 @@ const store = createStore({
         },
         createPost: ({ state }, formData) => {
             instance.post('/posts/', formData,
-                { headers: { 'Authorization': 'Bearer ' + state.user.token } }
+                { headers: { 'Authorization': 'Bearer ' + state.token } }
             )
                 .then(function () {
                     alert("Votre post a bien été creé !");
@@ -116,7 +116,7 @@ const store = createStore({
         },
         createComment: ({ state }, data) => {
             instance.post("http://localhost:3000/api/posts/"+data.idPosts+'/comment/', {comment:data.comment},
-                { headers: { 'Authorization': 'Bearer ' + state.user.token } }
+                { headers: { 'Authorization': 'Bearer ' + state.token } }
             )
                 .then(function () {
                     alert("Votre Commentaire a bien été créé !");
@@ -131,7 +131,7 @@ const store = createStore({
             
               instance
                   .get("http://localhost:3000/api/posts/"+myposts, {
-                  headers: { Authorization: "Bearer " + state.user.token },
+                  headers: { Authorization: "Bearer " + state.token },
                   })
                   .then((response)=>{
                       commit('LOAD_POSTS',response)
@@ -144,7 +144,7 @@ const store = createStore({
             let id = editedComment.id
             let comment = editedComment.comment
                instance
-                .put('/posts/comment',{id,comment}, { 'Authorization': 'Bearer ' + state.user.token })
+                .put('/posts/comment',{id,comment}, { 'Authorization': 'Bearer ' + state.token })
                 .then(function () {
                    document.location.reload();
                 })
@@ -157,7 +157,7 @@ const store = createStore({
             {
                 let id = commentId
                 instance
-                .delete("http://localhost:3000/api/posts/1/comment/"+id,{data:{id}, headers: { 'Authorization': 'Bearer ' + state.user.token } })
+                .delete("http://localhost:3000/api/posts/1/comment/"+id,{data:{id}, headers: { 'Authorization': 'Bearer ' + state.token } })
                 .then(function () {
                    document.location.reload();
                 })
@@ -167,8 +167,8 @@ const store = createStore({
         updatePost: ({ state }, post) => {
             let id = post.id
             let message = post.content
-                instance
-                .put('/posts',{id,message}, { 'Authorization': 'Bearer ' + state.user.token })
+               instance
+                .put('/posts',{id,message}, { 'Authorization': 'Bearer ' + state.token })
                 .then(function () {
                    document.location.reload();
                 })
@@ -181,7 +181,7 @@ const store = createStore({
             {
                 let id = postId
                 instance
-                .delete('/posts',{data:{id}, headers: { 'Authorization': 'Bearer ' + state.user.token } })
+                .delete('/posts',{data:{id}, headers: { 'Authorization': 'Bearer ' + state.token } })
                 .then(function () {
                    document.location.reload();
                 })
@@ -194,7 +194,7 @@ const store = createStore({
             instance.post('/posts/'+post.id+'/like',  {
                 like,
              },
-            { headers: { 'Authorization': 'Bearer ' + state.user.token } }
+            { headers: { 'Authorization': 'Bearer ' + state.token } }
          )
              .then(function () {
                 
