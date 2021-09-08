@@ -49,7 +49,11 @@ export default {
       this.$router.push('/login');
     },
  deleteUser: function () {
-  this.$store.dispatch('deleteUser');
+   var userselection = confirm("voulez vous vraiment Supprimez votre compte ?");
+    if (userselection == true)
+    {
+      this.$store.dispatch('deleteUser');
+    }
   },
  
    

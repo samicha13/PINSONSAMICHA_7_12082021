@@ -53,9 +53,9 @@ const store = createStore({
                 });
             })
         },
-        loadPosts: async ({ commit },myposts="") => {
+        loadPosts:  ({ commit },myposts="") => {
             
-            await  instance
+              instance
                   .get("http://localhost:3000/api/posts/"+myposts)
                   .then((response)=>{
                       commit('LOAD_POSTS',response)
@@ -77,9 +77,6 @@ const store = createStore({
         },
         deleteUser({ state,commit }) {
 
-            var userselection = confirm("voulez vous vraiment Supprimez votre compte ?");
-            if (userselection == true)
-            {
                 const userId = state.user.userId;
             instance({
                 method: 'DELETE',
@@ -98,7 +95,7 @@ const store = createStore({
                     alert("Une erreur est survenue. Veuillez vérifiez que votre mot de passe est correct.");
                     console.log(error);
                 });
-            }
+            
         },
         
         

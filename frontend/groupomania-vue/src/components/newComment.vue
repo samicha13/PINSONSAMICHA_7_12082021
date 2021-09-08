@@ -38,11 +38,12 @@ export default {
       // formData.append("idPosts", this.postid);
       this.createComment({"comment": this.comment,"idPosts": this.postid});
     },
-    createComment: (data) => {
+    createComment: function(data) {
+      const self = this;
       instance.post("http://localhost:3000/api/posts/"+data.idPosts+'/comment/', {comment: data.comment})
         .then(function () {
           alert("Votre Commentaire a bien été créé !");
-          document.location.reload();
+          self.$store.dispatch("loadPosts");
           //this.$router.push("/forum");
         })
         .catch((error) => {

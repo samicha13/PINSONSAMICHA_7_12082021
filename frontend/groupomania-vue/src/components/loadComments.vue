@@ -21,7 +21,7 @@
                   type="text"
                   placeholder="add any comment..."
                   id="comment"
-                /><button id="update-comment" @click="commentUpdate" >
+                /><button id="update-comment" @click="updateComment" >
                   modifiez votre commentaire
                 </button>
               </div>
@@ -62,12 +62,15 @@ export default {
   },
   methods: {
     updateComment: function() {
+      const self = this;
       let id = this.editedComment.id;
       let comment = this.editedComment.comment;
       instance
         .put('/posts/comment',{id,comment})
         .then(function () {
-          document.location.reload();
+          self.editedComment.id = "";
+          self.editedComment.comment = "";
+          self.$store.dispatch("loadPosts");
         })
         .catch((error) => {console.error(error.response.data)});
     },

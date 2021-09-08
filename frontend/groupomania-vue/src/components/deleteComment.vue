@@ -17,7 +17,8 @@ export default {
     };
   },
   methods: {
-    deleteComment: function() {            
+    deleteComment: function() {    
+      const self = this;        
       var userselection = confirm("Supprimer ce commentaire ?");
       if (userselection == true)
       {
@@ -25,7 +26,7 @@ export default {
         instance
           .delete("http://localhost:3000/api/posts/1/comment/"+id,{data:{id}})
             .then(function () {
-              document.location.reload();
+              self.$store.dispatch("loadPosts");
             })
             .catch((error) => {console.error(error.response.data)});
       }

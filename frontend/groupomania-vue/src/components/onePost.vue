@@ -29,7 +29,7 @@
       <div
         v-if="
           editedPost.id === post.id &&
-          (post.idUsers == currentUser.userId || currentUser.isAdmin)
+          (post.idUsers == currentUser.id || currentUser.isAdmin)
         "
       >
         <div class="form-group">
@@ -45,7 +45,7 @@
             rows="4"
           />
         </div>
-        <button class="btn btn-outline-secondary m-4" @click="updatePost()">
+        <button class="btn btn-outline-secondary m-4" @click="updatePost">
           modifier
         </button>
       </div>
@@ -118,23 +118,25 @@ export default {
   methods: {
     likePost: function(post) {
             
+     
       let like = (post.usersLikes!=null && post.usersLikes.includes(this.user.userId))?0:1
       instance.post('/posts/'+post.id+'/like',  { like })
         .then(function () {
                 
-          document.location.reload();
+          this.$store.dispatch("loadPosts");
         })
         .catch((error) => {
           console.error( error.message)
         });
     },
     updatePost: () => {
+     
       let id = this.editedPost.id
       let message = this.editedPost.content
       instance
-        .put('/posts/',{id,message})
+        .put('/posts',{id,message})
         .then(function () {
-          document.location.reload();
+          this.$store.dispatch("loadPosts");
         })
         .catch((error) => {console.error(error.response.data)});
     },
@@ -144,7 +146,6 @@ export default {
     ...mapGetters(["currentUser"]),
   },
 };
-
 </script>
 
 <style>

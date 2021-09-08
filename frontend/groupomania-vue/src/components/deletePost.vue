@@ -5,6 +5,7 @@
 
 <script>
 import instance from "@/Api.js";
+
 export default {
   name: "deletePost",
   props: {
@@ -16,8 +17,9 @@ export default {
     };
   },
   methods: {
-     deletePost: function() {
-            
+    deletePost: function() {
+
+      const self = this;
       var userselection = confirm("Supprimez ce post ?");
       if (userselection == true)
       {
@@ -25,7 +27,7 @@ export default {
         instance
           .delete('/posts',{data:{id}})
             .then(function () {
-              document.location.reload();
+              self.$store.dispatch("loadPosts");
             })
             .catch((error) => {console.error(error.response.data)});
       }

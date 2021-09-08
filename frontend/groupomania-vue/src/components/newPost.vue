@@ -81,11 +81,12 @@ export default {
       }
       this.createPost(formData);
     },
-    createPost: (formData) => {
+    createPost: function(formData) {
+      const self = this;
       instance.post('/posts/', formData)
         .then(function () {
           alert("Votre post a bien été creé !");
-          document.location.reload();
+          self.$store.dispatch("loadPosts");
           //this.$router.push("/forum");
         })
         .catch((error) => {
