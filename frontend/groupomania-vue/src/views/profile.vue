@@ -32,7 +32,7 @@ export default {
   name: 'profile',
   mounted: function () {
     if (this.$store.state.user.userId == -1) {
-      this.$router.push('/');
+      this.$router.push('/login');
       return ;
     }
   //this.$store.dispatch('getUserInfos', this.$store.state.user.userId);
@@ -46,7 +46,7 @@ export default {
   methods: {
     logout: function () {
       this.$store.commit('logout');
-      this.$router.push('/');
+      this.$router.push('/login');
     },
  deleteUser: function () {
   this.$store.dispatch('deleteUser');
