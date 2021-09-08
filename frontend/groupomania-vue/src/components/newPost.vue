@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import instance from "@/Api.js";
+
 export default {
   name: "newPost",
   data() {
@@ -77,7 +79,18 @@ export default {
       if (this.file !== null) {
         formData.append("image", this.file);
       }
-      this.$store.dispatch("createPost", formData);
+      this.createPost(formData);
+    },
+    createPost: (formData) => {
+      instance.post('/posts/', formData)
+        .then(function () {
+          alert("Votre post a bien été creé !");
+          document.location.reload();
+          //this.$router.push("/forum");
+        })
+        .catch((error) => {
+          this.error = error.response.data;
+        });
     },
     selectFile() {
       this.file = this.$refs.file.files[0];

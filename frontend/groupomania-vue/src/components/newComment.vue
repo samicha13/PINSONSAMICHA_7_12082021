@@ -1,24 +1,25 @@
-
 <template>
 
 <section>
-		<div class="">
-		
+    <div class="">
+    
         <div class="cardbox-comments">
-			  <div class="search">
-			   <input v-model="comment" type="text" placeholder="add any comment..." :id="postid">
-			   <button @click.prevent="buttonNewComment" id="add-comment">
+        <div class="search">
+         <input v-model="comment" type="text" placeholder="add any comment..." :id="postid">
+         <button @click.prevent="buttonNewComment" id="add-comment">
                    <i class="far fa-paper-plane"></i>
                </button>
-			  </div><!--/. Search -->
-			 </div>
+        </div><!--/. Search -->
+       </div>
 
 
-		</div>
-	</section>
+    </div>
+  </section>
 </template>
 
 <script>
+import instance from "@/Api.js";
+
 export default {
   name: "newComment",
   props: {
@@ -32,12 +33,23 @@ export default {
   },
   methods: {
     buttonNewComment() { 
-    //  const formData = new FormData();
-    //  formData.append("comment", this.comment);
-   //   formData.append("idPosts", this.postid);
-      this.$store.dispatch("createComment", {"comment": this.comment,"idPosts": this.postid});
-    }
-  },
+      // const formData = new FormData();
+      // formData.append("comment", this.comment);
+      // formData.append("idPosts", this.postid);
+      this.createComment({"comment": this.comment,"idPosts": this.postid});
+    },
+    createComment: (data) => {
+      instance.post("http://localhost:3000/api/posts/"+data.idPosts+'/comment/', {comment: data.comment})
+        .then(function () {
+          alert("Votre Commentaire a bien été créé !");
+          document.location.reload();
+          //this.$router.push("/forum");
+        })
+        .catch((error) => {
+          this.error = error.response.data;
+        });
+    },
+  }
 };
 </script>
 

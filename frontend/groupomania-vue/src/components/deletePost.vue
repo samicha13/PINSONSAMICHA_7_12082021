@@ -4,6 +4,7 @@
 
 
 <script>
+import instance from "@/Api.js";
 export default {
   name: "deletePost",
   props: {
@@ -15,11 +16,20 @@ export default {
     };
   },
   methods: {
-    deletePost() {
-      this.$store
-        .dispatch("deletePost",this.id)
-       .then()
-    },
+     deletePost: function() {
+            
+      var userselection = confirm("Supprimez ce post ?");
+      if (userselection == true)
+      {
+        let id = this.id
+        instance
+          .delete('/posts',{data:{id}})
+            .then(function () {
+              document.location.reload();
+            })
+            .catch((error) => {console.error(error.response.data)});
+      }
+    }
   },
 };
 </script>

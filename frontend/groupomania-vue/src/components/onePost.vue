@@ -45,7 +45,7 @@
             rows="4"
           />
         </div>
-        <button class="btn btn-outline-secondary m-4" @click="postUpdate">
+        <button class="btn btn-outline-secondary m-4" @click="updatePost()">
           modifier
         </button>
       </div>
@@ -92,7 +92,8 @@
 import deletePost from "./deletePost";
 import newComment from "./newComment";
 import loadComments from "./loadComments";
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
+import instance from "@/Api.js";
 let moment = require("moment");
 
 export default {
@@ -115,17 +116,35 @@ export default {
     };
   },
   methods: {
-    likePost(post) {
-      this.$store.dispatch("likePost", post).then();
+    likePost: function(post) {
+            
+      let like = (post.usersLikes!=null && post.usersLikes.includes(this.user.userId))?0:1
+      instance.post('/posts/'+post.id+'/like',  { like })
+        .then(function () {
+                
+          document.location.reload();
+        })
+        .catch((error) => {
+          console.error( error.message)
+        });
     },
-    postUpdate() {
-      this.$store.dispatch("updatePost", this.editedPost).then(() => {});
+    updatePost: () => {
+      let id = this.editedPost.id
+      let message = this.editedPost.content
+      instance
+        .put('/posts/',{id,message})
+        .then(function () {
+          document.location.reload();
+        })
+        .catch((error) => {console.error(error.response.data)});
     },
   },
   computed: {
+    ...mapState(["user"]),
     ...mapGetters(["currentUser"]),
   },
 };
+
 </script>
 
 <style>

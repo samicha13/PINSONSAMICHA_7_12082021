@@ -4,6 +4,8 @@
 
 
 <script>
+import instance from '@/Api.js';
+
 export default {
   name: "deleteComment",
   props: {
@@ -15,10 +17,18 @@ export default {
     };
   },
   methods: {
-    deleteComment() {
-      this.$store
-        .dispatch("deleteComment",this.id)
-       .then()
+    deleteComment: function() {            
+      var userselection = confirm("Supprimer ce commentaire ?");
+      if (userselection == true)
+      {
+        let id = this.id
+        instance
+          .delete("http://localhost:3000/api/posts/1/comment/"+id,{data:{id}})
+            .then(function () {
+              document.location.reload();
+            })
+            .catch((error) => {console.error(error.response.data)});
+      }
     },
   },
 };

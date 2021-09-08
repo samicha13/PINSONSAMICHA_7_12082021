@@ -54,7 +54,7 @@
     </div>
     <div class="form-row">
       <button
-        @click="login()"
+        @click="logUser()"
         class="button"
         :class="{ 'button--disabled': !validatedFields }"
         v-if="mode == 'login'"
@@ -63,7 +63,7 @@
         <span v-else>Connexion</span>
       </button>
       <button
-        @click="createAccount()"
+        @click="createNewAccount()"
         class="button"
         :class="{ 'button--disabled': !validatedFields }"
         v-else
@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import instance from '@/Api.js';
 import { mapState } from "vuex";
 export default {
   name: "Login",
@@ -120,16 +121,14 @@ export default {
     switchToLogin: function() {
       this.mode = "login";
     },
-    login: function() {
-      this.$store
-        .dispatch("login", {
+    logUser: function() {
+      this.login({
           email: this.email,
           password: this.password,
         })
         .then(() => {
            this.$store.dispatch("getUserInfos")
            .then(()=>   {
-              console.log('toto');
              this.$router.push("/profile")  
            })
           },
@@ -138,10 +137,21 @@ export default {
           }
         );
     },
-    createAccount:function ()  {
+    login: (userInfos) => {
+      return new Promise((resolve, reject) => {
+      instance.post('/auth/login', userInfos)
+        .then(function (response) {
+          localStorage.setItem('token', response.data.token);
+          resolve(response);
+        })
+        .catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    createNewAccount:function ()  {
       let self = this
-      this.$store
-        .dispatch("createAccount", {
+      this.createAccount({
           email: this.email,
           nom: this.nom,
           prenom: this.prenom,
@@ -149,12 +159,23 @@ export default {
         })
         .then(function
           ()  {
-            self.login();
+            self.logUser();
           },
            function(error) {
             console.log(error);
           }
         );
+    },
+    createAccount: (userInfos) => {
+      return new Promise((resolve, reject) => {
+        instance.post('/auth/signup', userInfos)
+          .then(function (response) {
+            resolve(response);
+          })
+          .catch(function (error) {
+            reject(error);
+          });
+      });
     },
   },
 };
@@ -182,4 +203,4 @@ export default {
 .form-row__input::placeholder {
   color: #aaaaaa;
 }
-</style>>
+</style>

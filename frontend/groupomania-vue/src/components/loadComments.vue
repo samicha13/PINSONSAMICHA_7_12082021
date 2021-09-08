@@ -40,7 +40,8 @@
 let moment = require("moment");
 
 import deleteComment from "./deleteComment.vue";
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
+import instance from '@/Api.js';
 
 export default {
   name: "loadComments",
@@ -60,8 +61,15 @@ export default {
     };
   },
   methods: {
-    commentUpdate() {
-      this.$store.dispatch("updateComment", this.editedComment).then(() => {});
+    updateComment: function() {
+      let id = this.editedComment.id;
+      let comment = this.editedComment.comment;
+      instance
+        .put('/posts/comment',{id,comment})
+        .then(function () {
+          document.location.reload();
+        })
+        .catch((error) => {console.error(error.response.data)});
     },
   },
   computed: {
