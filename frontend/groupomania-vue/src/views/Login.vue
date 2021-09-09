@@ -17,7 +17,9 @@
       <span class="card__action" @click="switchToLogin()">Se connecter</span>
     </p>
     <div class="form-row">
+    <label for="email" class="sr-only">email</label>
       <input
+      id="email"
         v-model="email"
         class="form-row__input"
         type="text"
@@ -25,13 +27,16 @@
       />
     </div>
     <div class="form-row" v-if="mode == 'create'">
+     <label for="names" class="sr-only">nom et prénom</label>
       <input
+      id="names"
         v-model="prenom"
         class="form-row__input"
         type="text"
         placeholder="Prénom"
       />
       <input
+      id="names"
         v-model="nom"
         class="form-row__input"
         type="text"
@@ -39,7 +44,9 @@
       />
     </div>
     <div class="form-row">
+      <label for="password" class="sr-only">email</label>
       <input
+      id="password"
         v-model="password"
         class="form-row__input"
         type="password"
@@ -69,7 +76,7 @@
         v-else
       >
         <span v-if="status == 'loading'">Création en cours...</span>
-        <span v-else>Créer mon compte</span>
+        <span class="message_login" v-else>Créer mon compte</span>
       </button>
     </div>
   </div>
@@ -202,5 +209,8 @@ export default {
 }
 .form-row__input::placeholder {
   color: #aaaaaa;
+}
+.message_login{
+  color: #000000;
 }
 </style>

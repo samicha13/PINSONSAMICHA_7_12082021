@@ -24,7 +24,7 @@
       v-if="post.media != null"
     />
     <div class="card-body">
-      <h5 class="card-title">{{ post.titre }}</h5>
+      <h2 class="card-title">{{ post.titre }}</h2>
 
       <div
         v-if="

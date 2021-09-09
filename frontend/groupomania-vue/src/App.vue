@@ -81,7 +81,7 @@ img {
   font-weight: 500;
 }
 .button {
-  background: #2196f3;
+  background:#525252;
   color: white;
   border-radius: 8px;
   font-weight: 800;
@@ -92,7 +92,7 @@ img {
   transition: 0.4s background-color;
 }
 .card__action {
-  color: #2196f3;
+  color: #575757;
   text-decoration: underline;
 }
 .card__action:hover {

@@ -6,9 +6,9 @@
         <div class="comment-main-level">
           <div class="comment-box">
             <div class="comment-head">
-              <h6 class="comment-name by-author">
+              <h3 class="comment-name by-author">
                 <a>{{ comment.User.nom }} {{ comment.User.prenom }}</a>
-              </h6>
+              </h3>
               <span>{{ moment(comment.createdAt).fromNow() }}</span>
                <div v-if="comment.idUsers===currentUser.userId || currentUser.isAdmin">
               <i class="fa fa-edit" @click="editedComment.id=comment.id;editedComment.comment=comment.comment"></i>
@@ -167,6 +167,7 @@ ul {
 .reply-list .comment-box {
   width: 610px;
 }
+
 .comment-box .comment-head {
   background: #fcfcfc;
   padding: 10px 12px;
@@ -207,7 +208,7 @@ ul {
 
 .comment-box .comment-head span {
   float: left;
-  color: #999;
+  color: #000000;
   font-size: 13px;
   position: relative;
   top: 1px;

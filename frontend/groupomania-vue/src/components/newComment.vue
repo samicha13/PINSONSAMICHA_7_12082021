@@ -2,11 +2,12 @@
 
 <section>
     <div class="">
-    
+   
         <div class="cardbox-comments">
         <div class="search">
-         <input v-model="comment" type="text" placeholder="add any comment..." :id="postid">
-         <button @click.prevent="buttonNewComment" id="add-comment">
+           <p for="input_comment"> COMMENTEZ</p>
+         <input aria-label="comment_button" id="input_comment" v-model="comment" type="text" placeholder="ajouter un commentaire" >
+         <button  aria-label="comment_button" title="comment_button" @click.prevent="buttonNewComment" id="add-comment">
                    <i class="far fa-paper-plane"></i>
                </button>
         </div><!--/. Search -->
