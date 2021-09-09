@@ -117,26 +117,27 @@ export default {
   },
   methods: {
     likePost: function(post) {
-            
-     
+      const self = this;
       let like = (post.usersLikes!=null && post.usersLikes.includes(this.user.userId))?0:1
       instance.post('/posts/'+post.id+'/like',  { like })
         .then(function () {
                 
-          this.$store.dispatch("loadPosts");
+          self.$store.dispatch("loadPosts");
         })
         .catch((error) => {
           console.error( error.message)
         });
     },
-    updatePost: () => {
-     
+    updatePost: function() {
+      const self = this;
       let id = this.editedPost.id
       let message = this.editedPost.content
       instance
         .put('/posts',{id,message})
         .then(function () {
-          this.$store.dispatch("loadPosts");
+          self.editedPost.id = "";
+          self.editedPost.content = "";
+          self.$store.dispatch("loadPosts");
         })
         .catch((error) => {console.error(error.response.data)});
     },
