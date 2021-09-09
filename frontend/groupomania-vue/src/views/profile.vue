@@ -31,7 +31,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'profile',
   mounted: function () {
-    if (this.$store.state.user.userId == -1) {
+    if (this.$store.state.user.userId === -1) {
       this.$router.push('/login');
       return ;
     }
@@ -50,7 +50,7 @@ export default {
     },
  deleteUser: function () {
    var userselection = confirm("voulez vous vraiment Supprimez votre compte ?");
-    if (userselection == true)
+    if (userselection === true)
     {
       this.$store.dispatch('deleteUser');
     }

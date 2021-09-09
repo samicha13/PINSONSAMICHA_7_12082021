@@ -29,7 +29,7 @@
       <div
         v-if="
           editedPost.id === post.id &&
-          (post.idUsers == currentUser.id || currentUser.isAdmin)
+          (post.idUsers === currentUser.id || currentUser.isAdmin)
         "
       >
         <div class="form-group">

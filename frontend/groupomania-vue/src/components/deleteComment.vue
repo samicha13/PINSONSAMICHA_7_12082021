@@ -20,7 +20,7 @@ export default {
     deleteComment: function() {    
       const self = this;        
       var userselection = confirm("Supprimer ce commentaire ?");
-      if (userselection == true)
+      if (userselection === true)
       {
         const id = this.id
         instance

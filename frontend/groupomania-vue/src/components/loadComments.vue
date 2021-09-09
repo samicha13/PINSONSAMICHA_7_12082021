@@ -15,7 +15,7 @@
               <delete-comment :id="comment.id" />
             </div>
             </div>
-            <div class="box"  v-if="editedComment.id==comment.id && (comment.idUsers===currentUser.userId || currentUser.isAdmin)">
+            <div class="box"  v-if="editedComment.id===comment.id && (comment.idUsers===currentUser.userId || currentUser.isAdmin)">
                 <input
                 v-model="editedComment.comment"
                   type="text"

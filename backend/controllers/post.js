@@ -68,7 +68,8 @@ exports.deletePost = (req, res) => {
   const decodedToken = jwt.verify(token, process.env.TK_SESSION);
   const userId = decodedToken.userId;
   const isAdmin = decodedToken.isAdmin;
-    models.findOne({ where: { id: req.body.id ,
+    models.findOne({ where: { 
+      id: req.body.id ,
       } })
         .then((post) => 
        

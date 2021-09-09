@@ -4,9 +4,9 @@
     <img class="login" alt="Logo groupomania" src="../assets/logo-black.png" />
   </div>
   <div class="card">
-    <h1 class="card__title" v-if="mode == 'login'">Connexion</h1>
+    <h1 class="card__title" v-if="mode === 'login'">Connexion</h1>
     <h2 class="card__title" v-else>Inscription</h2>
-    <p class="card__subtitle" v-if="mode == 'login'">
+    <p class="card__subtitle" v-if="mode === 'login'">
       Tu n'as pas encore de compte ?
       <span class="card__action" @click="switchToCreateAccount()"
         >Créer un compte</span
@@ -26,7 +26,7 @@
         placeholder="Adresse mail"
       />
     </div>
-    <div class="form-row" v-if="mode == 'create'">
+    <div class="form-row" v-if="mode === 'create'">
      <label for="names" class="sr-only">nom et prénom</label>
       <input
       id="names"
@@ -53,10 +53,10 @@
         placeholder="Mot de passe"
       />
     </div>
-    <div class="form-row" v-if="mode == 'login' && status == 'error_login'">
+    <div class="form-row" v-if="mode === 'login' && status === 'error_login'">
       Adresse mail et/ou mot de passe invalide
     </div>
-    <div class="form-row" v-if="mode == 'create' && status == 'error_create'">
+    <div class="form-row" v-if="mode === 'create' && status === 'error_create'">
       Adresse mail déjà utilisée et/ou invalide
     </div>
     <div class="form-row">
@@ -64,9 +64,9 @@
         @click="logUser()"
         class="button"
         :class="{ 'button--disabled': !validatedFields }"
-        v-if="mode == 'login'"
+        v-if="mode === 'login'"
       >
-        <span v-if="status == 'loading'">Connexion en cours...</span>
+        <span v-if="status === 'loading'">Connexion en cours...</span>
         <span v-else>Connexion</span>
       </button>
       <button
@@ -75,7 +75,7 @@
         :class="{ 'button--disabled': !validatedFields }"
         v-else
       >
-        <span v-if="status == 'loading'">Création en cours...</span>
+        <span v-if="status === 'loading'">Création en cours...</span>
         <span class="message_login" v-else>Créer mon compte</span>
       </button>
     </div>
@@ -100,7 +100,7 @@ export default {
   
   computed: {
     validatedFields: function () {
-      if (this.mode == "create") {
+      if (this.mode === "create") {
         if (
           this.email != "" &&
           this.prenom != "" &&
