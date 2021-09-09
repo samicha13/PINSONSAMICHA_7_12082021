@@ -90,7 +90,7 @@ const store = createStore({
                 .then(() => {
                     alert("votre compte à été correctement supprimé");
                    commit("logout")
-                   
+                   window.location="/login";
                 })
                 .catch(error => {
                     alert("Une erreur est survenue. Veuillez vérifiez que votre mot de passe est correct.");
