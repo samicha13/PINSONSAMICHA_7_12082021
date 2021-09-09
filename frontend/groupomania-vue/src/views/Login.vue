@@ -150,7 +150,7 @@ export default {
       });
     },
     createNewAccount:function ()  {
-      let self = this
+      const self = this
       this.createAccount({
           email: this.email,
           nom: this.nom,

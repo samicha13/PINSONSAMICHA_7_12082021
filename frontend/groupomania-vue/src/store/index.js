@@ -17,7 +17,6 @@ const store = createStore({
             state.user = user;
         },
       userInfos: function(state, user) {
-          console.log(user);
           state.user = user ;
       },
         LOAD_POSTS: function (state, posts) {

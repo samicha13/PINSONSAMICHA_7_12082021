@@ -23,7 +23,7 @@ export default {
       var userselection = confirm("Supprimez ce post ?");
       if (userselection == true)
       {
-        let id = this.id
+       const id = this.id
         instance
           .delete('/posts',{data:{id}})
             .then(function () {

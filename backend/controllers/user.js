@@ -55,7 +55,7 @@ exports.signup = (req, res, next) => {
       
        
       };
-       console.log(req.body);
+    
       models.create(user)
         .then((user) => {
           res.status(201).json({
@@ -180,9 +180,7 @@ exports.getUsersInfos=(req, res, next)=>
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, process.env.TK_SESSION);// token afin d'avoir accés aux sauces
   const userId = decodedToken.userId;
-console.log(decodedToken);
   if(userId){
-console.log(userId);
     models.findOne({ 
       
       where: {

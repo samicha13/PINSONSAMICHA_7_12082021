@@ -94,7 +94,7 @@ import newComment from "./newComment";
 import loadComments from "./loadComments";
 import { mapState, mapGetters } from "vuex";
 import instance from "@/Api.js";
-let moment = require("moment");
+const moment = require("moment");
 
 export default {
   name: "onePost",
@@ -118,7 +118,7 @@ export default {
   methods: {
     likePost: function(post) {
       const self = this;
-      let like = (post.usersLikes!=null && post.usersLikes.includes(this.user.userId))?0:1
+      const like = (post.usersLikes!=null && post.usersLikes.includes(this.user.userId))?0:1
       instance.post('/posts/'+post.id+'/like',  { like })
         .then(function () {
                 
@@ -130,8 +130,8 @@ export default {
     },
     updatePost: function() {
       const self = this;
-      let id = this.editedPost.id
-      let message = this.editedPost.content
+      const id = this.editedPost.id
+      const message = this.editedPost.content
       instance
         .put('/posts',{id,message})
         .then(function () {

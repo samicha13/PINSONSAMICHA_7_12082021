@@ -22,7 +22,7 @@ export default {
       var userselection = confirm("Supprimer ce commentaire ?");
       if (userselection == true)
       {
-        let id = this.id
+        const id = this.id
         instance
           .delete("http://localhost:3000/api/posts/1/comment/"+id,{data:{id}})
             .then(function () {

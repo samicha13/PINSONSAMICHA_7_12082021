@@ -37,7 +37,7 @@
 </template>
 
 <script>
-let moment = require("moment");
+const moment = require("moment");
 
 import deleteComment from "./deleteComment.vue";
 import { mapGetters } from 'vuex';
@@ -63,8 +63,8 @@ export default {
   methods: {
     updateComment: function() {
       const self = this;
-      let id = this.editedComment.id;
-      let comment = this.editedComment.comment;
+      const id = this.editedComment.id;
+      const comment = this.editedComment.comment;
       instance
         .put('/posts/comment',{id,comment})
         .then(function () {

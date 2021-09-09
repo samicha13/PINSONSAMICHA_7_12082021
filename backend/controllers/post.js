@@ -17,7 +17,7 @@ exports.createPost = (req, res, next) => {
   } const media =   req.body.message && req.file
   ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
   : null;
-console.log(media);
+
   models.create({
     idUsers: userId,
     titre: req.body.titre,
@@ -227,7 +227,7 @@ exports.getMyPosts=(req, res, next)=>{
     models.findOne({ where: { id: req.params.id }})
       .then((post) => 
       {
-        let usersLikes = post.usersLikes; // on stocke dans une variable
+        const usersLikes = post.usersLikes; // on stocke dans une variable
         if (usersLikes !== null && usersLikes.indexOf(userId) !== -1) { //si userlike pas nul et déjà présent dans le tableau alors 
           usersLikes = usersLikes
           .replace(", " + userId,'')
