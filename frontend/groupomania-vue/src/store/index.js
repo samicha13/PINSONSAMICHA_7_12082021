@@ -77,7 +77,8 @@ const store = createStore({
         },
         deleteUser({ state,commit }) {
 
-                const userId = state.user.userId;
+                const userId = state.user.id;
+                console.log(userId);
             instance({
                 method: 'DELETE',
                 url: '/auth/' + userId,
