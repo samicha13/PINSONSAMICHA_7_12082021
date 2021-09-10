@@ -4,12 +4,23 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
-
+const rateLimit = require("express-rate-limit");
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 const commentRoutes = require('./routes/comment');
+const helmet = require('helmet');
+app.use(helmet());
 
 
+
+
+const apiLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100 // limit each IP to 100 requests per windowMs
+  });
+  
+  //  apply to all requests
+  app.use("/api/",apiLimiter);
 
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
