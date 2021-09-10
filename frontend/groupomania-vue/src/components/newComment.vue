@@ -82,7 +82,7 @@ export default {
  border-radius: 4px;
  font-family: 'Rokkitt', serif;
  font-size: 14px;
- color: #8d8d8d;
+ color: #000000;
  height: inherit;
  width: 100%;
  font-weight: 700;

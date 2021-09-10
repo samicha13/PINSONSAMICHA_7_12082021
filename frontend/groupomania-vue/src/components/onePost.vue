@@ -14,7 +14,7 @@
           editedPost.content = post.message;
         "
       ></i>
-      <delete-comment :id="post.id" />
+      
     </div>
 
     <img
@@ -139,7 +139,7 @@ export default {
           self.editedPost.content = "";
           self.$store.dispatch("loadPosts");
         })
-        .catch((error) => {console.error(error.response.data)});
+        .catch((error) => {console.error(error)});
     },
   },
   computed: {
@@ -153,9 +153,7 @@ export default {
 p {
   margin-bottom: 0 !important;
 }
-.card-img-top {
-  height: 30vh;
-}
+
 
 .fa-thumbs-up {
   cursor: pointer;

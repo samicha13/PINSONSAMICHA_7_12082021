@@ -90,6 +90,7 @@ export default {
           //this.$router.push("/forum");
         })
         .catch((error) => {
+        console.log(error)
           this.error = error.response.data;
         });
     },

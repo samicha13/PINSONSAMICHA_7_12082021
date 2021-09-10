@@ -23,10 +23,12 @@ export default {
       var userselection = confirm("Supprimez ce post ?");
       if (userselection === true)
       {
+
        const id = this.id
         instance
-          .delete('/posts',+{data:{id}})
+          .delete('/posts',{data:{id}})
             .then(function () {
+
               self.$store.dispatch("loadPosts");
             })
             .catch((error) => {console.error(error.response.data)});
